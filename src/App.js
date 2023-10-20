@@ -50,7 +50,6 @@ const App = () => {
           </TabPanel>
         </TabContext>
       </Box>
-      
     </div>
   );
 };

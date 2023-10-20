@@ -57,7 +57,9 @@ const UsersTab = () => {
         contentLabel='Add New User'
         onRequestClose={() => setDisplayNewUserForm(false)}
       >
-        <CloseButton onClick={() => setDisplayNewUserForm(false)}>X</CloseButton>
+        <div style={{float: 'right'}}>
+          <CloseButton onClick={() => setDisplayNewUserForm(false)}>X</CloseButton>
+        </div>
         <AddUser/>
       </ReactModal>
       <div>
