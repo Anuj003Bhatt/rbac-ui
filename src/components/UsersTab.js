@@ -1,22 +1,21 @@
-// src/GroupsTab.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { DataGrid } from '@mui/x-data-grid';
 import Button from "@mui/material/Button";
 import CustomDropdown from './common/CustomDropdown';
 
-const actions = ['View Group', 'Edit Group']
+const actions = ['View User', 'Edit User']
 
-const GroupsTab = () => {
+const UsersTab = () => {
 
-  const [groups, setGroups] = useState([]);
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Fetch the list of users from the backend API
-    axios.get('http://localhost:8002/users/groups')
+    axios.get('http://localhost:8002/users')
       .then((response) => {
-        setGroups(response.data.data);
+        setUsers(response.data.data);
         setLoading(false);
       })
       .catch((error) => {
@@ -27,14 +26,14 @@ const GroupsTab = () => {
 
 
   const columns = [
-    { field: 'id', headerName: 'Group ID', flex: 1 },
-    { field: 'name', headerName: 'Group Name', flex: 1 },
-    { field: 'description', headerName: 'Description', flex: 1 },
+    { field: 'id', headerName: 'ID', flex: 1 },
+    { field: 'userName', headerName: 'Username', flex: 1 },
+    { field: 'status', headerName: 'Status', flex: 1 },
     // Add other columns as described
 
     {
       field: 'actions',
-      headerName: 'Actions',
+      headerName: '',
       flex: 1,
       renderCell: (params) => (
         <CustomDropdown actions={actions}/>
@@ -49,13 +48,13 @@ const GroupsTab = () => {
   return (
     <div>
       <div>
-        <Button variant="outlined">Create User Group</Button>
+        <Button variant="outlined">Create User</Button>
       </div>
       <div style={{ height: 400, width: '100%' }}>
-        <DataGrid rows={groups} columns={columns} />
+        <DataGrid rows={users} columns={columns} />
       </div>
     </div>
   );
 };
 
-export default GroupsTab;
+export default UsersTab;

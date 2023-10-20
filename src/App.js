@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Tabs, Tab, Box } from '@mui/material';
+import { Tab, Box } from '@mui/material';
 import TabPanel from '@mui/lab/TabPanel';
 import TabContext from "@mui/lab/TabContext"; 
-import UsersTab from './UsersTab';
-import GroupsTab from './GroupsTab';
+import UsersTab from './components/UsersTab';
+import GroupsTab from './components/GroupsTab';
 import { TabList } from '@mui/lab';
+import RolesTab from './components/RolesTab';
+import PermissionsTab from './components/PermissionsTab';
 
 const App = () => {
   const [selectedTab, setSelectedTab] = useState('1');
@@ -30,14 +32,22 @@ const App = () => {
             <TabList onChange={handleChange} aria-label="lab API tabs example">
               <Tab label="Users" value="1" />
               <Tab label="Groups" value="2" />
-              <Tab label="Permissions" value="3" />
-              <Tab label="Roles" value="4" />
+              <Tab label="Roles" value="3" />
+              <Tab label="Permissions" value="4" />
             </TabList>
           </Box>
-          <TabPanel value="1"><UsersTab/></TabPanel>
-          <TabPanel value="2"><GroupsTab/></TabPanel>
-          <TabPanel value="3">Item Three</TabPanel>
-          <TabPanel value="4">Item Four</TabPanel>
+          <TabPanel value="1">
+            <UsersTab/>
+          </TabPanel>
+          <TabPanel value="2">
+            <GroupsTab/>
+          </TabPanel>
+          <TabPanel value="3">
+            <RolesTab/>
+          </TabPanel>
+          <TabPanel value="4">
+            <PermissionsTab/>
+          </TabPanel>
         </TabContext>
       </Box>
       

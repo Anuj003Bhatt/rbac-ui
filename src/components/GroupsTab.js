@@ -1,24 +1,21 @@
-// src/UsersTab.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { DataGrid } from '@mui/x-data-grid';
 import Button from "@mui/material/Button";
 import CustomDropdown from './common/CustomDropdown';
 
-const actions = ['View User', 'Edit User']
+const actions = ['View Group', 'Edit Group']
 
-const UsersTab = () => {
+const GroupsTab = () => {
 
-  const [users, setUsers] = useState([]);
+  const [groups, setGroups] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Fetch the list of users from the backend API
-    axios.get('http://localhost:8002/users')
+    axios.get('http://localhost:8002/users/groups')
       .then((response) => {
-        console.log("Here setting response");
-        setUsers(response.data.data);
-        console.log(users);
+        setGroups(response.data.data);
         setLoading(false);
       })
       .catch((error) => {
@@ -29,9 +26,9 @@ const UsersTab = () => {
 
 
   const columns = [
-    { field: 'id', headerName: 'User ID', flex: 1 },
-    { field: 'userName', headerName: 'Username', flex: 1 },
-    { field: 'status', headerName: 'Status', flex: 1 },
+    { field: 'id', headerName: 'ID', flex: 1 },
+    { field: 'name', headerName: 'Name', flex: 1 },
+    { field: 'description', headerName: 'Description', flex: 1 },
     // Add other columns as described
 
     {
@@ -51,13 +48,13 @@ const UsersTab = () => {
   return (
     <div>
       <div>
-        <Button variant="outlined">Create User</Button>
+        <Button variant="outlined">Create User Group</Button>
       </div>
       <div style={{ height: 400, width: '100%' }}>
-        <DataGrid rows={users} columns={columns} />
+        <DataGrid rows={groups} columns={columns} />
       </div>
     </div>
   );
 };
 
-export default UsersTab;
+export default GroupsTab;
