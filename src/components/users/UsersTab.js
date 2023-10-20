@@ -30,7 +30,6 @@ const UsersTab = () => {
       });
   }, []);
 
-
   const columns = [
     { field: 'id', headerName: 'ID', flex: 1 },
     { field: 'userName', headerName: 'Username', flex: 1 },
@@ -67,7 +66,7 @@ const UsersTab = () => {
         <Button onClick={setDisplayNewUserForm} variant="outlined">Create User</Button>
       </div>
       <div style={{ height: 400, width: '100%' }}>
-        <DataGrid rows={users} columns={columns} />
+        <DataGrid getRowId={(row) => row.id} rows={users} columns={columns} />
       </div>
     </div>
   );
