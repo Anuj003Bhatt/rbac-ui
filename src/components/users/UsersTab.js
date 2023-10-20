@@ -6,6 +6,7 @@ import CustomDropdown from '../common/CustomDropdown';
 import ReactModal from 'react-modal';
 import { CloseButton } from 'react-bootstrap';
 import AddUser from './AddUser';
+import { SERVICES } from '../../utilities/Constants';
 
 const actions = ['View User', 'Edit User']
 
@@ -18,13 +19,13 @@ const UsersTab = () => {
 
   useEffect(() => {
     // Fetch the list of users from the backend API
-    axios.get('http://localhost:8002/users')
+    axios.get(`http://${SERVICES.rbac.host}:${SERVICES.rbac.port}/users`)
       .then((response) => {
         setUsers(response.data.data);
         setLoading(false);
       })
       .catch((error) => {
-        console.error('Error fetching groups:', error);
+        console.error('Error fetching users:', error);
         setLoading(false);
       });
   }, []);

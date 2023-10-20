@@ -3,14 +3,27 @@ import { Row } from "react-bootstrap";
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Form from 'react-bootstrap/Form';
+import axios from "axios";
+import { SERVICES } from '../../utilities/Constants';
+import { stringify } from "json5";
 
 const AddUser = () => {
     const [username, setUserName] = useState('');
     const [password, setPassword] = useState('');
 
     const handleSubmit = (event) => {
-        alert(`User ${username} with password ${password} Created`);
+        axios.post(`http://${SERVICES.rbac.host}:${SERVICES.rbac.port}/users`, {
+                "userName": username,
+                "password": password
+        }, {
+            'Access-Control-Allow-Origin':'*'
+        }).then((response) => {
+            console.error('Error while creating user:', stringify(response.data));
+        }).catch((error) => {
+            console.error('Error while creating user:', error);
+        })
     }
+
     return (
         <Form style={{ padding: '5%' }} onSubmit={handleSubmit}>
             <Row className="mb-3">

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { DataGrid } from '@mui/x-data-grid';
 import Button from "@mui/material/Button";
 import CustomDropdown from '../common/CustomDropdown';
+import { SERVICES } from '../../utilities/Constants';
 
 const actions = ['View Group', 'Edit Group']
 
@@ -13,7 +14,7 @@ const GroupsTab = () => {
 
   useEffect(() => {
     // Fetch the list of users from the backend API
-    axios.get('http://localhost:8002/users/groups')
+    axios.get(`http://${SERVICES.rbac.host}:${SERVICES.rbac.port}/users/groups`)
       .then((response) => {
         setGroups(response.data.data);
         setLoading(false);

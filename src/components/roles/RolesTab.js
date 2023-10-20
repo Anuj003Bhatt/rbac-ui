@@ -3,6 +3,7 @@ import axios from 'axios';
 import { DataGrid } from '@mui/x-data-grid';
 import Button from "@mui/material/Button";
 import CustomDropdown from '../common/CustomDropdown';
+import { SERVICES } from '../../utilities/Constants';
 
 const actions = ['View Role Details', 'Edit Role']
 
@@ -13,13 +14,13 @@ const RolesTab = () => {
 
   useEffect(() => {
     // Fetch the list of roles from the backend API
-    axios.get('http://localhost:8002/roles')
+    axios.get(`http://${SERVICES.rbac.host}:${SERVICES.rbac.port}/roles`)
       .then((response) => {
         setRoles(response.data.data);
         setLoading(false);
       })
       .catch((error) => {
-        console.error('Error fetching groups:', error);
+        console.error('Error fetching roles:', error);
         setLoading(false);
       });
   }, []);
