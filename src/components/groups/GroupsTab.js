@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { DataGrid } from '@mui/x-data-grid';
 import Button from "@mui/material/Button";
-import CustomDropdown from './common/CustomDropdown';
+import CustomDropdown from '../common/CustomDropdown';
 
 const actions = ['View Group', 'Edit Group']
 

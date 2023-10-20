@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { Tab, Box } from '@mui/material';
 import TabPanel from '@mui/lab/TabPanel';
 import TabContext from "@mui/lab/TabContext"; 
-import UsersTab from './components/UsersTab';
-import GroupsTab from './components/GroupsTab';
+import UsersTab from './components/users/UsersTab';
+import GroupsTab from './components/groups/GroupsTab';
 import { TabList } from '@mui/lab';
-import RolesTab from './components/RolesTab';
-import PermissionsTab from './components/PermissionsTab';
+import RolesTab from './components/roles/RolesTab';
+import PermissionsTab from './components/permissions/PermissionsTab';
 
 const App = () => {
   const [selectedTab, setSelectedTab] = useState('1');

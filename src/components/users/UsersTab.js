@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { DataGrid } from '@mui/x-data-grid';
 import Button from "@mui/material/Button";
-import CustomDropdown from './common/CustomDropdown';
+import CustomDropdown from '../common/CustomDropdown';
+import ReactModal from 'react-modal';
+import { CloseButton } from 'react-bootstrap';
+import AddUser from './AddUser';
 
 const actions = ['View User', 'Edit User']
 
@@ -10,6 +13,8 @@ const UsersTab = () => {
 
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const [displayNewUserForm, setDisplayNewUserForm] = useState(false);
 
   useEffect(() => {
     // Fetch the list of users from the backend API
@@ -47,8 +52,16 @@ const UsersTab = () => {
 
   return (
     <div>
+      <ReactModal 
+        isOpen={displayNewUserForm}
+        contentLabel='Add New User'
+        onRequestClose={() => setDisplayNewUserForm(false)}
+      >
+        <CloseButton onClick={() => setDisplayNewUserForm(false)}>X</CloseButton>
+        <AddUser/>
+      </ReactModal>
       <div>
-        <Button variant="outlined">Create User</Button>
+        <Button onClick={setDisplayNewUserForm} variant="outlined">Create User</Button>
       </div>
       <div style={{ height: 400, width: '100%' }}>
         <DataGrid rows={users} columns={columns} />
