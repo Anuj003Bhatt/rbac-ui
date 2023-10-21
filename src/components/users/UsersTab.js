@@ -33,6 +33,9 @@ const UsersTab = () => {
   const columns = [
     { field: 'id', headerName: 'ID', flex: 1 },
     { field: 'userName', headerName: 'Username', flex: 1 },
+    { field: 'name', headerName: 'Name', flex: 1 },
+    { field: 'email', headerName: 'Email', flex: 1 },
+    { field: 'phone', headerName: 'Phone', flex: 1 },
     { field: 'status', headerName: 'Status', flex: 1 },
     // Add other columns as described
 
@@ -54,6 +57,7 @@ const UsersTab = () => {
     <div>
       <ReactModal 
         isOpen={displayNewUserForm}
+        ariaHideApp={false}
         contentLabel='Add New User'
         onRequestClose={() => setDisplayNewUserForm(false)}
       >
@@ -63,7 +67,7 @@ const UsersTab = () => {
         <AddUser/>
       </ReactModal>
       <div>
-        <Button onClick={setDisplayNewUserForm} variant="outlined">Create User</Button>
+        <Button onClick={() => setDisplayNewUserForm(true)} variant="outlined">Create User</Button>
       </div>
       <div style={{ height: 400, width: '100%' }}>
         <DataGrid getRowId={(row) => row.id} rows={users} columns={columns} />
