@@ -5,11 +5,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Form from 'react-bootstrap/Form';
 import axios from "axios";
 import { SERVICES } from '../../utilities/Constants';
-import { stringify } from "json5";
 import { Divider } from "@mui/material";
 
 const AddUser = () => {
 
+    const [errorMessage, setErrorMessage] = useState('');
     const [userDetails, setUserDetails] = useState({});
     const getKey = (targetId) => {
         switch (targetId) {
@@ -33,16 +33,19 @@ const AddUser = () => {
                 [getKey(e.target.id)]: e.target.value
             }
         });
-    }
+    };
 
     const handleSubmit = (event) => {
+        event.preventDefault();
         axios.post(`http://${SERVICES.rbac.host}:${SERVICES.rbac.port}/users`, userDetails, {
             'Access-Control-Allow-Origin': '*'
         }).then((response) => {
-            console.error('Error while creating user:', stringify(response.data));
+            setErrorMessage('');
+            event.target.submit();
         }).catch((error) => {
-            console.error('Error while creating user:', error);
-        })
+            console.log(error.response.data);
+            setErrorMessage('Error: ' + error.response.data.error);
+        });
     }
 
     return (
@@ -106,12 +109,16 @@ const AddUser = () => {
                         />
                     </Form.Group>
                 </Row>
-                <Row>
+                <Row className="mb-3">
                     <Button style={{ margin: '1%' }} variant="primary" type="submit">
                         Submit
                     </Button>
                 </Row>
+                <Row className="mb-3">
+                    <div style={{color: 'red'}}>{errorMessage}</div>
+                </Row>
             </Form>
+            
         </div>
     );
 };
