@@ -3,7 +3,7 @@ import { Row } from "react-bootstrap";
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Form from 'react-bootstrap/Form';
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { SERVICES } from '../../utilities/Constants';
 import { Divider } from "@mui/material";
 
@@ -43,8 +43,13 @@ const AddUser = () => {
             setErrorMessage('');
             event.target.submit();
         }).catch((error) => {
-            console.log(error.response.data);
-            setErrorMessage('Error: ' + error.response.data.error);
+            switch (error?.code) {
+                case AxiosError.ERR_NETWORK:
+                    setErrorMessage('Error: Unable to submit request to the server');
+                    break;
+                default:
+                    setErrorMessage('Error: ' + error.response);
+            }
         });
     }
 

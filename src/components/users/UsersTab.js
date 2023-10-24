@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { DataGrid } from '@mui/x-data-grid';
-import Button from "@mui/material/Button";
 import CustomDropdown from '../common/CustomDropdown';
 import ReactModal from 'react-modal';
 import { CloseButton } from 'react-bootstrap';
 import AddUser from './AddUser';
 import { SERVICES } from '../../utilities/Constants';
+import CustomGrid from '../common/CustomGrid';
 
-const actions = ['View User', 'Edit User']
+const commonActions = ['View User']
 
 const UsersTab = () => {
 
@@ -25,7 +24,7 @@ const UsersTab = () => {
         setLoading(false);
       })
       .catch((error) => {
-        console.error('Error fetching users:', error);
+        console.log('Error fetching users:', error);
         setLoading(false);
       });
   }, []);
@@ -43,9 +42,12 @@ const UsersTab = () => {
       field: 'actions',
       headerName: '',
       flex: 1,
-      renderCell: (params) => (
-        <CustomDropdown actions={actions}/>
-      ),
+      renderCell: (params) => {
+        let disableEnableButton = 'Disable User';
+        if (params.status !== 'ACTIVE') {
+          disableEnableButton = 'Enable User';
+        }
+        return (<CustomDropdown actions={[...commonActions,disableEnableButton]} />)},
     },
   ];
 
@@ -58,19 +60,20 @@ const UsersTab = () => {
       <ReactModal 
         isOpen={displayNewUserForm}
         ariaHideApp={false}
-        contentLabel='Add New User'
+        contentLabel='Add User'
         onRequestClose={() => setDisplayNewUserForm(false)}
       >
         <div style={{float: 'right'}}>
-          <CloseButton onClick={() => setDisplayNewUserForm(false)}>X</CloseButton>
+          <CloseButton onClick={() => setDisplayNewUserForm(false)}/>
         </div>
         <AddUser/>
       </ReactModal>
-      <div>
-        <Button onClick={() => setDisplayNewUserForm(true)} variant="outlined">Create User</Button>
-      </div>
       <div style={{ height: 400, width: '100%' }}>
-        <DataGrid getRowId={(row) => row.id} rows={users} columns={columns} />
+        <CustomGrid
+          gridActionText="New User"
+          clickAction={() => setDisplayNewUserForm(true)}
+          data={users}
+          columns={columns} />
       </div>
     </div>
   );

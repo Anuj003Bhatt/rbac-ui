@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { DataGrid } from '@mui/x-data-grid';
-import Button from "@mui/material/Button";
 import CustomDropdown from '../common/CustomDropdown';
 import { SERVICES } from '../../utilities/Constants';
+import CustomGrid from '../common/CustomGrid';
+import { CloseButton } from 'react-bootstrap';
+import ReactModal from 'react-modal';
 
 const actions = ['View Permission Details', 'Edit Permission']
 
@@ -11,6 +12,7 @@ const PermissionsTab = () => {
 
   const [permissions, setPermissions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [displayNewPermissionForm, setDisplayNewPermissionForm] = useState(false);
 
   useEffect(() => {
     // Fetch the list of roles from the backend API
@@ -49,11 +51,23 @@ const PermissionsTab = () => {
 
   return (
     <div>
-      <div>
-        <Button variant="outlined">Create Permission</Button>
-      </div>
+      <ReactModal
+        isOpen={displayNewPermissionForm}
+        ariaHideApp={false}
+        contentLabel='Add Permission'
+        onRequestClose={() => setDisplayNewPermissionForm(false)}
+      >
+        <div style={{float: 'right'}}>
+          <CloseButton onClick={() => setDisplayNewPermissionForm(false)}/>
+        </div>
+        New permission form
+      </ReactModal>
       <div style={{ height: 400, width: '100%' }}>
-        <DataGrid rows={permissions} columns={columns} />
+        <CustomGrid
+          gridActionText="Add Permission"
+          clickAction={() => setDisplayNewPermissionForm(true)}
+          data={permissions}
+          columns={columns} />
       </div>
     </div>
   );

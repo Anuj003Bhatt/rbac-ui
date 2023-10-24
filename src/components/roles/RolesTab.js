@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { DataGrid } from '@mui/x-data-grid';
-import Button from "@mui/material/Button";
 import CustomDropdown from '../common/CustomDropdown';
 import { SERVICES } from '../../utilities/Constants';
+import CustomGrid from '../common/CustomGrid';
+import ReactModal from 'react-modal';
+import { CloseButton } from 'react-bootstrap';
 
 const actions = ['View Role Details', 'Edit Role']
 
@@ -11,6 +12,7 @@ const RolesTab = () => {
 
   const [roles, setRoles] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [displayNewRoleForm, setDisplayNewRoleForm] = useState(false);
 
   useEffect(() => {
     // Fetch the list of roles from the backend API
@@ -48,11 +50,23 @@ const RolesTab = () => {
 
   return (
     <div>
-      <div>
-        <Button variant="outlined">Create Role</Button>
-      </div>
+      <ReactModal
+        isOpen={displayNewRoleForm}
+        ariaHideApp={false}
+        contentLabel='Add Role'
+        onRequestClose={() => setDisplayNewRoleForm(false)}
+      >
+        <div style={{float: 'right'}}>
+          <CloseButton onClick={() => setDisplayNewRoleForm(false)}/>
+        </div>
+        New role form
+      </ReactModal>
       <div style={{ height: 400, width: '100%' }}>
-        <DataGrid rows={roles} columns={columns} />
+      <CustomGrid
+          gridActionText="Add Role"
+          clickAction={() => setDisplayNewRoleForm(true)}
+          data={roles}
+          columns={columns} />
       </div>
     </div>
   );

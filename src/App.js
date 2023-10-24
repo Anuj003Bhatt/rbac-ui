@@ -7,15 +7,55 @@ import GroupsTab from './components/groups/GroupsTab';
 import { TabList } from '@mui/lab';
 import RolesTab from './components/roles/RolesTab';
 import PermissionsTab from './components/permissions/PermissionsTab';
+import 'mdb-react-ui-kit/dist/css/mdb.min.css';
+
+import {
+  MDBNavbar,
+  MDBNavbarNav,
+  MDBNavbarItem,
+  MDBNavbarLink,
+  MDBNavbarToggler,
+  MDBContainer,
+  MDBIcon,
+  MDBCollapse
+} from 'mdb-react-ui-kit';
 
 const App = () => {
   const [selectedTab, setSelectedTab] = useState('1');
+  const [showBasic, setShowBasic] = useState(true);
   const handleChange = (event, newValue) => {
     setSelectedTab(newValue);
   };
 
   return (
     <div>
+      <MDBNavbar expand='lg' light bgColor='white'>
+        <MDBContainer fluid>
+          <MDBNavbarToggler
+            onClick={() => setShowBasic(!showBasic)}
+            aria-controls='navbarExample01'
+            aria-expanded='false'
+            aria-label='Toggle navigation'
+          >
+            <MDBIcon fas icon='bars' />
+          </MDBNavbarToggler>
+          <MDBCollapse show={showBasic}>
+            <MDBNavbarNav right className='mb-2 mb-lg-0'>
+              <MDBNavbarItem active>
+                <MDBNavbarLink aria-current='page' href='#'>
+                  Home
+                </MDBNavbarLink>
+              </MDBNavbarItem>
+              <MDBNavbarItem>
+                <MDBNavbarLink href='#'>Features</MDBNavbarLink>
+              </MDBNavbarItem>
+              <MDBNavbarItem>
+                <MDBNavbarLink href='#'>About</MDBNavbarLink>
+              </MDBNavbarItem>
+            </MDBNavbarNav>
+          </MDBCollapse>
+        </MDBContainer>
+      </MDBNavbar>
        <div 
         style={{ 
           width: "fit-content", 
