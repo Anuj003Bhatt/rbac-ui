@@ -1,96 +1,37 @@
 import React, { useState } from 'react';
-import { Tab, Box } from '@mui/material';
-import TabPanel from '@mui/lab/TabPanel';
-import TabContext from "@mui/lab/TabContext"; 
-import UsersTab from './components/users/UsersTab';
-import GroupsTab from './components/groups/GroupsTab';
-import { TabList } from '@mui/lab';
-import RolesTab from './components/roles/RolesTab';
-import PermissionsTab from './components/permissions/PermissionsTab';
-import 'mdb-react-ui-kit/dist/css/mdb.min.css';
-
-import {
-  MDBNavbar,
-  MDBNavbarNav,
-  MDBNavbarItem,
-  MDBNavbarLink,
-  MDBNavbarToggler,
-  MDBContainer,
-  MDBIcon,
-  MDBCollapse
-} from 'mdb-react-ui-kit';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import AccessControl from './components/access-control/AccessControl';
+import Swagger from './components/swagger/Swagger';
+import './App.css';
+import About from './components/about/About';
 
 const App = () => {
-  const [selectedTab, setSelectedTab] = useState('1');
-  const [showBasic, setShowBasic] = useState(true);
-  const handleChange = (event, newValue) => {
-    setSelectedTab(newValue);
-  };
+  const [selectedApp, setSelectedApp] = useState('1')
+
+  const renderApp = () => {
+    switch (selectedApp) {
+      case '2':
+        return <About />;
+      case '3':
+        return <Swagger />
+      case '1':
+      default: return <AccessControl />
+    }
+  }
 
   return (
     <div>
-      <MDBNavbar expand='lg' light bgColor='white'>
-        <MDBContainer fluid>
-          <MDBNavbarToggler
-            onClick={() => setShowBasic(!showBasic)}
-            aria-controls='navbarExample01'
-            aria-expanded='false'
-            aria-label='Toggle navigation'
-          >
-            <MDBIcon fas icon='bars' />
-          </MDBNavbarToggler>
-          <MDBCollapse show={showBasic}>
-            <MDBNavbarNav right className='mb-2 mb-lg-0'>
-              <MDBNavbarItem active>
-                <MDBNavbarLink aria-current='page' href='#'>
-                  Home
-                </MDBNavbarLink>
-              </MDBNavbarItem>
-              <MDBNavbarItem>
-                <MDBNavbarLink href='#'>Features</MDBNavbarLink>
-              </MDBNavbarItem>
-              <MDBNavbarItem>
-                <MDBNavbarLink href='#'>About</MDBNavbarLink>
-              </MDBNavbarItem>
-            </MDBNavbarNav>
-          </MDBCollapse>
-        </MDBContainer>
-      </MDBNavbar>
-       <div 
-        style={{ 
-          width: "fit-content", 
-          padding: 20,
-          fontSize: 51,
-          margin: "auto",
-        }} 
-      > 
-        <strong>Access Control</strong> 
-      </div> 
-      <Box sx={{ width: '100%', typography: 'body1' }}>
-        <TabContext value={selectedTab}>
-          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <TabList onChange={handleChange} aria-label="lab API tabs example">
-              <Tab label="Users" value="1" />
-              <Tab label="Groups" value="2" />
-              <Tab label="Roles" value="3" />
-              <Tab label="Permissions" value="4" />
-            </TabList>
-          </Box>
-          <TabPanel value="1">
-            <UsersTab/>
-          </TabPanel>
-          <TabPanel value="2">
-            <GroupsTab/>
-          </TabPanel>
-          <TabPanel value="3">
-            <RolesTab/>
-          </TabPanel>
-          <TabPanel value="4">
-            <PermissionsTab/>
-          </TabPanel>
-        </TabContext>
-      </Box>
+      <Navbar expand="lg" className="bg-body-tertiary">
+        <Nav className="me-auto">
+          <Nav.Link className='navLink' href="#app" onClick={() => setSelectedApp('1')}>Access Control</Nav.Link>
+          <Nav.Link className='navLink' href="#link" onClick={() => setSelectedApp('2')}>About</Nav.Link>
+          <Nav.Link className='navLink' href="#swagger" onClick={() => setSelectedApp('3')}>Swagger</Nav.Link>
+        </Nav>
+      </Navbar>
+      {renderApp()}
     </div>
+
   );
 };
 
