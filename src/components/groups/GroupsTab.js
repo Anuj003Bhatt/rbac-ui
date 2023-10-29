@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import CustomDropdown from '../common/CustomDropdown';
-import { SERVICES } from '../../utilities/Constants';
 import CustomGrid from '../common/CustomGrid';
 import ReactModal from 'react-modal';
 import { CloseButton } from 'react-bootstrap';
 import AddUserGroup from './AddUserGroup';
+import { getListOfUserGroups } from '../users/UserService';
 
 const GroupsTab = () => {
 
@@ -29,16 +28,14 @@ const GroupsTab = () => {
   }
 
   useEffect(() => {
-    // Fetch the list of users from the backend API
-    axios.get(`http://${SERVICES.rbac.host}:${SERVICES.rbac.port}/users/groups`)
-      .then((response) => {
-        setGroups(response.data.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error('Error fetching groups:', error);
-        setLoading(false);
-      });
+    getListOfUserGroups()
+    .then( (response) => {
+      setGroups(response);
+      setLoading(false);
+    }).catch((error) => {
+      console.error('Error fetching groups:', error);
+      setLoading(false);
+    });
   }, []);
 
 

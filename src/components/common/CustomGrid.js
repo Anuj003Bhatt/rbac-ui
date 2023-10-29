@@ -18,13 +18,23 @@ const CustomGrid = (props) => {
         );
     }
     
-    return (
-        <DataGrid 
+    switch(props.hideToolbar){
+      case true:
+        return (
+          <DataGrid 
+            getRowId={(row) => row.id}
+            rows={props.data}
+            columns={props.columns} />
+        );
+      default:
+        return (
+          <DataGrid 
             slots={{toolbar: CustomToolbar}}
             getRowId={(row) => row.id}
             rows={props.data}
             columns={props.columns} />
-    );
+        );
+    }
 }
 
 export default CustomGrid;

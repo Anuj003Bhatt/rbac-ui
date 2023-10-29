@@ -5,13 +5,15 @@ import { CloseButton } from 'react-bootstrap';
 import AddUser from './AddUser';
 import CustomGrid from '../common/CustomGrid';
 import { disableUser, enableUser, getListOfUsers } from './UserService';
+import UserDetails from './UserDetails';
 
 const UsersTab = () => {
 
   const [users, setUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
   const [loading, setLoading] = useState(true);
-
   const [displayNewUserForm, setDisplayNewUserForm] = useState(false);
+  const [displayUserDetails, setDisplayUserDetails] = useState(false);
 
   useEffect(() => {
       getListOfUsers()
@@ -44,7 +46,8 @@ const UsersTab = () => {
   }
 
   const viewUserDetailPage = (user) => {
-    alert("details: " + user.id);
+    setSelectedUser(user);
+    setDisplayUserDetails(true);
   }
 
   const columns = [
@@ -71,11 +74,20 @@ const UsersTab = () => {
   return (
     <div>
       <ReactModal
+        isOpen={displayUserDetails}
+        ariaHideApp={false}
+        contentLabel='User Details'
+        onRequestClose={() => setDisplayUserDetails(false)}>
+        <div style={{ float: 'right' }}>
+          <CloseButton onClick={() => setDisplayUserDetails(false)} />
+        </div>
+        <UserDetails user={selectedUser}/>
+      </ReactModal>
+      <ReactModal
         isOpen={displayNewUserForm}
         ariaHideApp={false}
         contentLabel='Add User'
-        onRequestClose={() => setDisplayNewUserForm(false)}
-      >
+        onRequestClose={() => setDisplayNewUserForm(false)}>
         <div style={{ float: 'right' }}>
           <CloseButton onClick={() => setDisplayNewUserForm(false)} />
         </div>

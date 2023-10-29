@@ -8,7 +8,18 @@ export const getListOfUsers = async () => {
         return response.data.data;
       })
       .catch((error) => {
-        throw new Error(error);
+        throw error;
+      });
+}
+
+export const getListOfUserGroups = async () => {
+  // Fetch the list of user groups from the backend API
+  return axios.get(`http://${SERVICES.rbac.host}:${SERVICES.rbac.port}/users/groups`)
+      .then((response) => {
+        return response.data.data;
+      })
+      .catch((error) => {
+        throw error
       });
 }
 
