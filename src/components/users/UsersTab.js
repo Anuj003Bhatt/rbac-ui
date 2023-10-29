@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import CustomDropdown from '../common/CustomDropdown';
 import ReactModal from 'react-modal';
 import { CloseButton } from 'react-bootstrap';
 import AddUser from './AddUser';
-import { SERVICES } from '../../utilities/Constants';
 import CustomGrid from '../common/CustomGrid';
-
-const commonActions = ['View User']
+import { disableUser, enableUser, getListOfUsers } from './UserService';
 
 const UsersTab = () => {
 
@@ -17,17 +14,38 @@ const UsersTab = () => {
   const [displayNewUserForm, setDisplayNewUserForm] = useState(false);
 
   useEffect(() => {
-    // Fetch the list of users from the backend API
-    axios.get(`http://${SERVICES.rbac.host}:${SERVICES.rbac.port}/users`)
-      .then((response) => {
-        setUsers(response.data.data);
-        setLoading(false);
-      })
-      .catch((error) => {
+      getListOfUsers()
+      .then(
+        (response) => {
+          setUsers(response);
+          setLoading(false);
+        }
+      ).catch((error) => {
         console.log('Error fetching users:', error);
         setLoading(false);
       });
   }, []);
+
+  const getActionsForUser = (user) => {
+    const commonActions = {
+      'View User':() => viewUserDetailPage(user)
+    }
+    if (user.status === 'ACTIVE') {
+      return {
+        ...commonActions,
+        'Disable User': () => disableUser(user)
+      }
+    } else {
+      return {
+        ...commonActions,
+        'Enable User': () => enableUser(user)
+      };
+    }
+  }
+
+  const viewUserDetailPage = (user) => {
+    alert("details: " + user.id);
+  }
 
   const columns = [
     { field: 'id', headerName: 'ID', flex: 1 },
@@ -42,12 +60,7 @@ const UsersTab = () => {
       field: 'actions',
       headerName: '',
       flex: 1,
-      renderCell: (params) => {
-        let disableEnableButton = 'Disable User';
-        if (params.status !== 'ACTIVE') {
-          disableEnableButton = 'Enable User';
-        }
-        return (<CustomDropdown actions={[...commonActions,disableEnableButton]} />)},
+      renderCell: (params) => <CustomDropdown actions={getActionsForUser(params.row)} />,
     },
   ];
 
@@ -57,16 +70,16 @@ const UsersTab = () => {
 
   return (
     <div>
-      <ReactModal 
+      <ReactModal
         isOpen={displayNewUserForm}
         ariaHideApp={false}
         contentLabel='Add User'
         onRequestClose={() => setDisplayNewUserForm(false)}
       >
-        <div style={{float: 'right'}}>
-          <CloseButton onClick={() => setDisplayNewUserForm(false)}/>
+        <div style={{ float: 'right' }}>
+          <CloseButton onClick={() => setDisplayNewUserForm(false)} />
         </div>
-        <AddUser/>
+        <AddUser />
       </ReactModal>
       <div style={{ height: 400, width: '100%' }}>
         <CustomGrid

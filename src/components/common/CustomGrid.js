@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 import { Button } from 'react-bootstrap';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const CustomGrid = (props) => {
@@ -13,7 +13,7 @@ const CustomGrid = (props) => {
             <GridToolbarFilterButton />
             <GridToolbarDensitySelector />
             <GridToolbarExport />
-            <Button onClick={props.clickAction} variant="outlined">{props.gridActionText}</Button>
+            <Button onClick={props.clickAction} >{props.gridActionText}</Button>
           </GridToolbarContainer>
         );
     }

@@ -6,12 +6,11 @@ const CustomDropdown = (props) => {
           <Dropdown.Toggle variant="success" id="dropdown-basic" style={{ cursor: "pointer" }}>
             Actions
           </Dropdown.Toggle>
-          <Dropdown.Menu popperConfig={{strategy: 'fixed'}}>
+          <Dropdown.Menu style={{position:'fixed'}} popperConfig={{strategy: 'fixed'}}>
           {
-              props.actions.map(
-                (item, index) => {
+            Object.keys(props.actions).map( (item, index) => {
                   return (
-                      <Dropdown.Item key={`i-${index}`}>{item}</Dropdown.Item>
+                      <Dropdown.Item onClick={props.actions[item]} key={`i-${index}`}>{item}</Dropdown.Item>
                   );
                 }
               )

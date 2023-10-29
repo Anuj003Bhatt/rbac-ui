@@ -5,14 +5,28 @@ import { SERVICES } from '../../utilities/Constants';
 import CustomGrid from '../common/CustomGrid';
 import ReactModal from 'react-modal';
 import { CloseButton } from 'react-bootstrap';
-
-const actions = ['View Group', 'Edit Group']
+import AddUserGroup from './AddUserGroup';
 
 const GroupsTab = () => {
 
   const [groups, setGroups] = useState([]);
   const [loading, setLoading] = useState(true);
   const [displayNewUserGroupForm, setDisplayNewUserGroupForm] = useState(false);
+
+  const getActionsForGroup = (group) => {
+    return {
+      'View Group': () => displayUserGroupDetail(group), 
+      'Edit Group': () => displayEditUserGroup(group)
+    }
+  }
+
+  const displayUserGroupDetail = (group) => {
+    alert("User Group Detail: " + group.id);
+  }
+
+  const displayEditUserGroup = (group) => {
+    alert("Edit User group: " + group.id);
+  }
 
   useEffect(() => {
     // Fetch the list of users from the backend API
@@ -38,9 +52,7 @@ const GroupsTab = () => {
       field: 'actions',
       headerName: 'Actions',
       flex: 1,
-      renderCell: (params) => (
-        <CustomDropdown actions={actions}/>
-      ),
+      renderCell: (params) => <CustomDropdown actions={getActionsForGroup(params)} />,
     },
   ];
 
@@ -56,10 +68,10 @@ const GroupsTab = () => {
         contentLabel='Add New User Group'
         onRequestClose={() => setDisplayNewUserGroupForm(false)}
       >
-        <div style={{float: 'right'}}>
-          <CloseButton onClick={() => setDisplayNewUserGroupForm(false)}/>
+        <div style={{ float: 'right' }}>
+          <CloseButton onClick={() => setDisplayNewUserGroupForm(false)} />
         </div>
-        New user group form
+        <AddUserGroup />
       </ReactModal>
       <div style={{ height: 400, width: '100%' }}>
         <CustomGrid
