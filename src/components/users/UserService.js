@@ -12,17 +12,6 @@ export const getListOfUsers = async () => {
       });
 }
 
-export const getListOfUserGroups = async () => {
-  // Fetch the list of user groups from the backend API
-  return axios.get(`http://${SERVICES.rbac.host}:${SERVICES.rbac.port}/users/groups`)
-      .then((response) => {
-        return response.data.data;
-      })
-      .catch((error) => {
-        throw error
-      });
-}
-
 export const disableUser = async (user) => {
     return await axios.patch(`http://${SERVICES.rbac.host}:${SERVICES.rbac.port}/users/${user.id}/disable`)
     .catch((error) => {

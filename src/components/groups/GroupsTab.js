@@ -4,7 +4,7 @@ import CustomGrid from '../common/CustomGrid';
 import ReactModal from 'react-modal';
 import { CloseButton } from 'react-bootstrap';
 import AddUserGroup from './AddUserGroup';
-import { getListOfUserGroups } from '../users/UserService';
+import { getListOfUserGroups } from './GroupsService';
 import UserGroupDetails from './GroupDetails';
 
 const GroupsTab = () => {
@@ -17,18 +17,13 @@ const GroupsTab = () => {
 
   const getActionsForGroup = (group) => {
     return {
-      'View Group': () => renderUserGroupDetail(group), 
-      'Edit Group': () => displayEditUserGroup(group)
+      'View Group': () => renderUserGroupDetail(group)
     }
   }
 
   const renderUserGroupDetail = (group) => {
     setSelectedGroup(group);
     setDisplayUserGroupDetails(true);
-  }
-
-  const displayEditUserGroup = (group) => {
-    alert("Edit User group: " + group.id);
   }
 
   useEffect(() => {

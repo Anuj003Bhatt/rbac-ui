@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   MDBCol,
   MDBRow,
@@ -8,9 +8,49 @@ import {
   MDBIcon
 } from 'mdb-react-ui-kit';
 import CustomGrid from '../common/CustomGrid';
-import { CloseButton } from 'react-bootstrap';
+import { Button, CloseButton, Col, Row } from 'react-bootstrap';
+import { getListOfUserGroups } from '../groups/GroupsService';
+import SearchBar from '../common/SearchBar';
+import { getListOfRoles } from '../roles/RoleService';
 
 const UserDetails = (props) => {
+
+  const [groups, setGroups] = useState([]);
+  const [roles, setRoles] = useState([]);
+  const [selectedGroup, setSelectedGroup] = useState(null);
+  const [selectedRole, setSelectedRole] = useState(null);
+
+  useEffect(()=>{
+    getListOfUserGroups()
+    .then( (response) => {
+      setGroups(response);
+    }).catch((error) => {
+      console.error('Error fetching groups:', error);
+    });
+    getListOfRoles()
+    .then( (response) => {
+      setRoles(response);
+    }).catch((error) => {
+      console.error('Error fetching roles:', error);
+    });
+  }, [])
+
+  const addUserToGroup = (event) => {
+    if (selectedGroup) {
+      alert('Added Group')
+    } else {
+      alert("No group selected")
+    }
+  }
+
+  const addUserToRole = (event) => {
+    if (selectedRole) {
+      alert('Added Role')
+    } else {
+      alert("No role selected")
+    }
+  }
+
   return (
     <MDBCardBody className="p-4">
       <div style={{ float: 'right' }}>
@@ -46,6 +86,19 @@ const UserDetails = (props) => {
           </MDBCol>
         </MDBRow>
         <hr className="mt-0 mb-4" />
+        <MDBTypography tag="h6">
+          <Row>
+            <Col>User Roles</Col>
+            <Col>
+              <Row>
+                <Col><SearchBar selectAction={setSelectedRole} data={roles}/></Col>
+                <Col><Button onClick={addUserToRole}>Add Role</Button></Col>
+              </Row>
+            </Col>
+          </Row>
+        </MDBTypography>
+        
+        <hr className="mt-0 mb-4" />
         <MDBRow className="pt-1">
           <CustomGrid
             hideToolbar={true}
@@ -61,7 +114,19 @@ const UserDetails = (props) => {
         </MDBRow>
 
         <hr className="mt-0 mb-4" />
-        <MDBTypography tag="h6">User Groups</MDBTypography>
+        <MDBTypography tag="h6">
+          <Row>
+            <Col>User Groups</Col>
+            <Col>
+              <Row>
+                <Col><SearchBar selectAction={setSelectedGroup} data={groups}/></Col>
+                <Col><Button onClick={addUserToGroup}>Add Group</Button></Col>
+              </Row>
+            </Col>
+          </Row>
+          
+        </MDBTypography>
+        
         <hr className="mt-0 mb-4" />
         <MDBRow className="pt-1">
           <MDBRow className="pt-1">

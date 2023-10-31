@@ -1,0 +1,17 @@
+.input-wrapper {
+    border-radius: 10px;
+    display: flex;
+}
+
+input {
+    background-color: transparent;
+    border: none;
+}
+
+input:focus {
+    outline: none;
+}
+
+#search-icon{
+    color: royalblue;
+}

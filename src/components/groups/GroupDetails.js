@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   MDBCol,
   MDBRow,
@@ -9,8 +9,27 @@ import {
 } from 'mdb-react-ui-kit';
 import CustomGrid from '../common/CustomGrid';
 import { CloseButton } from 'react-bootstrap';
+import { getListOfUserInGroups } from './GroupsService';
+import { getListOfUsers } from '../users/UserService';
 
 const UserGroupDetails = (props) => {
+  const [groupUsers, setGroupUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [users, setUsers] = useState(true);
+
+  useEffect(() => {
+    getListOfUserInGroups(props.group.id)
+    .then(
+      (response) => {
+        setGroupUsers(response);
+        setLoading(false);
+      }
+    ).catch((error) => {
+      console.log('Error fetching users:', error);
+      setLoading(false);
+    });
+  }, [props.group.id]);
+  
   return (
     <MDBCardBody className="p-4">
       <div style={{ float: 'right' }}>
@@ -35,19 +54,22 @@ const UserGroupDetails = (props) => {
         </MDBRow>
         
         <hr className="mt-0 mb-4" />
-        {/* <MDBRow className="pt-1">
+        
+          {loading?'Loading':
+          <MDBRow className="pt-1">
           <CustomGrid
             hideToolbar={true}
-            gridActionText="User Roles"
-            clickAction={() => alert("Here")}
-            data={props.user.roles} columns={
+            data={groupUsers} columns={
               [
-                // { field: 'id', headerName: 'ID', flex: 1 },
-                { field: 'name', headerName: 'Role', flex: 1 }
+                { field: 'id', headerName: 'ID', flex: 1 },
+                { field: 'name', headerName: 'Name', flex: 1 }
               ]
             } />
 
-        </MDBRow> */}
+        </MDBRow>
+          }
+        
+        
       </MDBCardBody>
     </MDBCardBody>
   );

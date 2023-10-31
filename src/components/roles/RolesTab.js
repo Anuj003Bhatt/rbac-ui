@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import CustomDropdown from '../common/CustomDropdown';
-import { SERVICES } from '../../utilities/Constants';
 import CustomGrid from '../common/CustomGrid';
 import ReactModal from 'react-modal';
 import { CloseButton } from 'react-bootstrap';
 import AddRole from './AddRole';
+import { getListOfRoles } from './RoleService';
 
 const actions = ['View Role Details', 'Edit Role']
 
@@ -17,9 +16,9 @@ const RolesTab = () => {
 
   useEffect(() => {
     // Fetch the list of roles from the backend API
-    axios.get(`http://${SERVICES.rbac.host}:${SERVICES.rbac.port}/roles`)
+    getListOfRoles()
       .then((response) => {
-        setRoles(response.data.data);
+        setRoles(response);
         setLoading(false);
       })
       .catch((error) => {
