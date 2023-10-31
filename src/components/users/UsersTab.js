@@ -78,10 +78,7 @@ const UsersTab = () => {
         ariaHideApp={false}
         contentLabel='User Details'
         onRequestClose={() => setDisplayUserDetails(false)}>
-        <div style={{ float: 'right' }}>
-          <CloseButton onClick={() => setDisplayUserDetails(false)} />
-        </div>
-        <UserDetails user={selectedUser}/>
+        <UserDetails setDisplayUserDetails={() => setDisplayUserDetails(false)} user={selectedUser}/>
       </ReactModal>
       <ReactModal
         isOpen={displayNewUserForm}
@@ -93,7 +90,7 @@ const UsersTab = () => {
         </div>
         <AddUser />
       </ReactModal>
-      <div style={{ height: 400, width: '100%' }}>
+      <div style={{ height:'100%', width: '100%' }}>
         <CustomGrid
           gridActionText="New User"
           clickAction={() => setDisplayNewUserForm(true)}

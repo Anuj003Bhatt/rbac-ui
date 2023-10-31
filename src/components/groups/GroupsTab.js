@@ -5,22 +5,26 @@ import ReactModal from 'react-modal';
 import { CloseButton } from 'react-bootstrap';
 import AddUserGroup from './AddUserGroup';
 import { getListOfUserGroups } from '../users/UserService';
+import UserGroupDetails from './GroupDetails';
 
 const GroupsTab = () => {
 
   const [groups, setGroups] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedGroup, setSelectedGroup] = useState(null);
   const [displayNewUserGroupForm, setDisplayNewUserGroupForm] = useState(false);
+  const [displayUserGroupDetails, setDisplayUserGroupDetails] = useState(false);
 
   const getActionsForGroup = (group) => {
     return {
-      'View Group': () => displayUserGroupDetail(group), 
+      'View Group': () => renderUserGroupDetail(group), 
       'Edit Group': () => displayEditUserGroup(group)
     }
   }
 
-  const displayUserGroupDetail = (group) => {
-    alert("User Group Detail: " + group.id);
+  const renderUserGroupDetail = (group) => {
+    setSelectedGroup(group);
+    setDisplayUserGroupDetails(true);
   }
 
   const displayEditUserGroup = (group) => {
@@ -49,7 +53,7 @@ const GroupsTab = () => {
       field: 'actions',
       headerName: 'Actions',
       flex: 1,
-      renderCell: (params) => <CustomDropdown actions={getActionsForGroup(params)} />,
+      renderCell: (params) => <CustomDropdown actions={getActionsForGroup(params.row)} />,
     },
   ];
 
@@ -59,6 +63,17 @@ const GroupsTab = () => {
 
   return (
     <div>
+      <ReactModal
+        isOpen={displayUserGroupDetails}
+        ariaHideApp={false}
+        contentLabel='User Group Details'
+        onRequestClose={() => setDisplayUserGroupDetails(false)}
+      >
+        <UserGroupDetails
+          setDisplayUserGroupDetails={() => setDisplayUserGroupDetails(false)}
+          group={selectedGroup}
+          />
+      </ReactModal>
       <ReactModal
         isOpen={displayNewUserGroupForm}
         ariaHideApp={false}
