@@ -72,7 +72,7 @@ const UsersTab = () => {
   }
 
   return (
-    <div>
+    <div style={{height:'100%', minHeight:'100%'}}>
       <ReactModal
         isOpen={displayUserDetails}
         ariaHideApp={false}

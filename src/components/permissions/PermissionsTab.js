@@ -5,6 +5,7 @@ import { SERVICES } from '../../utilities/Constants';
 import CustomGrid from '../common/CustomGrid';
 import { CloseButton } from 'react-bootstrap';
 import ReactModal from 'react-modal';
+import AddPermission from './AddPermission';
 
 const actions = ['View Permission Details', 'Edit Permission']
 
@@ -60,7 +61,7 @@ const PermissionsTab = () => {
         <div style={{float: 'right'}}>
           <CloseButton onClick={() => setDisplayNewPermissionForm(false)}/>
         </div>
-        New permission form
+        <AddPermission/>
       </ReactModal>
       <div style={{ height: 400, width: '100%' }}>
         <CustomGrid

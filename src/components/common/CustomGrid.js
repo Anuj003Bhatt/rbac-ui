@@ -28,7 +28,7 @@ const CustomGrid = (props) => {
         );
       default:
         return (
-          <DataGrid 
+          <DataGrid
             slots={{toolbar: CustomToolbar}}
             getRowId={(row) => row.id}
             rows={props.data}

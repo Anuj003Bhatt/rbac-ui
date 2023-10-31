@@ -5,6 +5,7 @@ import { SERVICES } from '../../utilities/Constants';
 import CustomGrid from '../common/CustomGrid';
 import ReactModal from 'react-modal';
 import { CloseButton } from 'react-bootstrap';
+import AddRole from './AddRole';
 
 const actions = ['View Role Details', 'Edit Role']
 
@@ -59,7 +60,7 @@ const RolesTab = () => {
         <div style={{float: 'right'}}>
           <CloseButton onClick={() => setDisplayNewRoleForm(false)}/>
         </div>
-        New role form
+        <AddRole/>
       </ReactModal>
       <div style={{ height: 400, width: '100%' }}>
       <CustomGrid
