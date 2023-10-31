@@ -22,3 +22,16 @@ export const getListOfUserInGroups = async (id) => {
           throw error
         });
 }
+
+export const addUserInGroups = async (userId, groupId) => {
+  return await axios
+  .put(`http://${SERVICES.rbac.host}:${SERVICES.rbac.port}/assignments/user/${userId}/userGroup/${groupId}`,null,{
+    headers:{
+      'Access-Control-Allow-Origin': '*'
+    }
+  })
+  .then((response) => response.data)
+  .catch((error) => {
+          throw error
+        });
+}

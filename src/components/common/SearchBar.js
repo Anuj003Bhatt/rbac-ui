@@ -4,7 +4,7 @@ import { GridSearchIcon } from '@mui/x-data-grid';
 import SearchResultList from './SearchResultList';
 
 const SearchBar = (props) => {
-    const [userInputText, setUserInputText] = useState(null);
+    const [userInputText, setUserInputText] = useState('');
     const [results, setResults] = useState(null);
     const [showResults, setShowResults] = useState(false);
 
@@ -31,7 +31,7 @@ const SearchBar = (props) => {
             <div className="input-wrapper">
                <GridSearchIcon id="search-icon"/>
                <input
-                placeholder='Add User Group...'
+                placeholder='Search ...'
                 value={userInputText}
                 onChange={(e) => handleChange(e)}
                 />

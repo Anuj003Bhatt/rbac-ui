@@ -11,3 +11,13 @@ export const getListOfRoles = async () => {
         throw error;
       });
 }
+
+export const assignRoleToUser = async (userId, roleId) => {
+  return await axios.put(`http://${SERVICES.rbac.host}:${SERVICES.rbac.port}/assignments/user/${userId}/role/${roleId}`,null,{
+    headers:{
+      'Access-Control-Allow-Origin': '*'
+    }
+  })
+  .then((response) => response.data)
+  .catch((error) => {throw error;});
+}

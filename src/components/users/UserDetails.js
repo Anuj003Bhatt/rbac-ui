@@ -9,9 +9,10 @@ import {
 } from 'mdb-react-ui-kit';
 import CustomGrid from '../common/CustomGrid';
 import { Button, CloseButton, Col, Row } from 'react-bootstrap';
-import { getListOfUserGroups } from '../groups/GroupsService';
+import { addUserInGroups, getListOfUserGroups } from '../groups/GroupsService';
 import SearchBar from '../common/SearchBar';
-import { getListOfRoles } from '../roles/RoleService';
+import { assignRoleToUser, getListOfRoles } from '../roles/RoleService';
+import { AxiosError } from 'axios';
 
 const UserDetails = (props) => {
 
@@ -20,35 +21,54 @@ const UserDetails = (props) => {
   const [selectedGroup, setSelectedGroup] = useState(null);
   const [selectedRole, setSelectedRole] = useState(null);
 
-  useEffect(()=>{
+  useEffect(() => {
     getListOfUserGroups()
-    .then( (response) => {
-      setGroups(response);
-    }).catch((error) => {
-      console.error('Error fetching groups:', error);
-    });
+      .then((response) => {
+        setGroups(response);
+      }).catch((error) => {
+        console.error('Error fetching groups:', error);
+      });
     getListOfRoles()
-    .then( (response) => {
-      setRoles(response);
-    }).catch((error) => {
-      console.error('Error fetching roles:', error);
-    });
+      .then((response) => {
+        setRoles(response);
+      }).catch((error) => {
+        console.error('Error fetching roles:', error);
+      });
   }, [])
 
   const addUserToGroup = (event) => {
-    if (selectedGroup) {
-      alert('Added Group')
-    } else {
-      alert("No group selected")
+    try {
+      if (selectedGroup) {
+        addUserInGroups(props.user.id, selectedGroup)
+      }
+    } catch (error) {
+      switch (error?.code) {
+        case AxiosError.ERR_NETWORK:
+          alert('Error: Unable to submit request to the server');
+          break;
+        default:
+          alert('Error: ' + error.response);
+      }
     }
   }
 
   const addUserToRole = (event) => {
-    if (selectedRole) {
-      alert('Added Role')
-    } else {
-      alert("No role selected")
+    try {
+      if (selectedRole) {
+        assignRoleToUser(props.user.id, selectedRole)
+      } else {
+        alert("No role selected")
+      }
+    } catch (error) {
+      switch (error?.code) {
+        case AxiosError.ERR_NETWORK:
+          alert('Error: Unable to submit request to the server');
+          break;
+        default:
+          alert('Error: ' + error.response);
+      }
     }
+
   }
 
   return (
@@ -91,13 +111,13 @@ const UserDetails = (props) => {
             <Col>User Roles</Col>
             <Col>
               <Row>
-                <Col><SearchBar selectAction={setSelectedRole} data={roles}/></Col>
+                <Col><SearchBar selectAction={setSelectedRole} data={roles} /></Col>
                 <Col><Button onClick={addUserToRole}>Add Role</Button></Col>
               </Row>
             </Col>
           </Row>
         </MDBTypography>
-        
+
         <hr className="mt-0 mb-4" />
         <MDBRow className="pt-1">
           <CustomGrid
@@ -119,14 +139,14 @@ const UserDetails = (props) => {
             <Col>User Groups</Col>
             <Col>
               <Row>
-                <Col><SearchBar selectAction={setSelectedGroup} data={groups}/></Col>
+                <Col><SearchBar selectAction={setSelectedGroup} data={groups} /></Col>
                 <Col><Button onClick={addUserToGroup}>Add Group</Button></Col>
               </Row>
             </Col>
           </Row>
-          
+
         </MDBTypography>
-        
+
         <hr className="mt-0 mb-4" />
         <MDBRow className="pt-1">
           <MDBRow className="pt-1">
