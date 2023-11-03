@@ -4,49 +4,93 @@ import userGroupsLogo from './assets/user-group.jpeg';
 import roleGroupsLogo from './assets/role-group.jpeg';
 import userPermissions from './assets/user-permissions.jpeg';
 import rolesLogo from './assets/roles.jpeg';
+import { Col, Row } from 'react-bootstrap';
 
 const About = () => {
     return (
         <div>
-            <header>
-                <h1>Role Based Access Control</h1>
-            </header>
             <main>
-                <section id="brief">
-                    <p>Role-based access control (RBAC) refers to the idea of assigning permissions to users based on their role within an organization. It offers a simple, manageable approach to access management that is less prone to error than assigning permissions to users individually. When using RBAC for Role Management, you analyze the needs of your users and group them into roles based on common responsibilities. You then assign one or more roles to each user and one or more permissions to each role. The user-role and role-permissions relationships make it simple to perform user assignments since users no longer need to be managed individually, but instead have privileges that conform to the permissions assigned to their role(s).</p>
-                </section>
-                <section id="users" class="section">
-                    <div class="section-image">
-                        <img src={usersLogo} alt="Users" />
-                    </div>
-                    <div class="section-text right">
-                        <h1>Users</h1>
-                        <hr className="mt-0 mb-4" />
-                        <p>
-                            Users are the fundamental building blocks of an RBAC system.
-                            They represent individuals or entities requiring access to various resources within an organization's ecosystem.
-                            The key aspects of users in an RBAC system include:
-                        </p>
-                        <ul>
-                            <li>
-                                <strong>User Identification: </strong>
-                                Each user must have a unique identifier (e.g., username or employee ID) for easy tracking and management.
-                            </li>
-                            <li>
-                                <strong>Authentication & Authorization: </strong>
-                                Secure and encrypted authentication and authorization mechanisms in place to define
-                                which resources or actions a user can access based on their role within the organization.
-                            </li>
-                        </ul>
-                    </div>
-                </section>
+                <h1>Role Based Access Control</h1>
+                <hr className="mt-0 mb-4" />
+                <p>Role-based access control (RBAC) refers to the idea of assigning permissions to users based on their role within an organization. It offers a simple, manageable approach to access management that is less prone to error than assigning permissions to users individually. When using RBAC for Role Management, you analyze the needs of your users and group them into roles based on common responsibilities. You then assign one or more roles to each user and one or more permissions to each role. The user-role and role-permissions relationships make it simple to perform user assignments since users no longer need to be managed individually, but instead have privileges that conform to the permissions assigned to their role(s).</p>
+            </main>
+            <main>
+                <Row className='card-row'>
+                    <Col className='card-cell'>
+                        <div class="flip-card-container" >
+                            <div class="flip-card">
 
-                <section id="role-groups" class="section">
+                                <div class="card-front">
+                                    <figure>
+                                        <div class="img-bg"></div>
+                                        <img src={usersLogo} alt="Users" />
+                                        <figcaption>Users</figcaption>
+                                    </figure>
+                                </div>
 
-                    <div class="section-text right">
-                        <h1>Roles</h1>
-                        <hr className="mt-0 mb-4" />
-                        <p>
+                                <div class="card-back">
+                                    <figure>
+                                        <div class="img-bg"></div>
+                                        <img src={usersLogo} alt="Users" />
+                                    </figure>
+                                    <div className='car-back-content'>
+                                        <h1>Users</h1>
+                                        <hr className="mt-0 mb-4" />
+                                        
+                                    <p>
+                                        Users are the fundamental building blocks of an RBAC system.
+                                        They represent individuals or entities requiring access to various resources within an organization's ecosystem.
+                                        The key aspects of users in an RBAC system include:
+                                    </p>
+                                    <ul>
+                                        <li>
+                                            <strong>User Identification: </strong>
+                                            Each user must have a unique identifier (e.g., username or employee ID) for easy tracking and management.
+                                        </li>
+                                        <li>
+                                            <strong>Authentication & Authorization: </strong>
+                                            Secure and encrypted authentication and authorization mechanisms in place to define
+                                            which resources or actions a user can access based on their role within the organization.
+                                        </li>
+                                    </ul>
+                                    </div>
+
+                                    <div class="design-container">
+                                        <span class="design design--1"></span>
+                                        <span class="design design--2"></span>
+                                        <span class="design design--3"></span>
+                                        <span class="design design--4"></span>
+                                        <span class="design design--5"></span>
+                                        <span class="design design--6"></span>
+                                        <span class="design design--7"></span>
+                                        <span class="design design--8"></span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </Col>
+                    <Col className='card-cell'>
+                    <div class="flip-card-container" >
+                            <div class="flip-card">
+
+                                <div class="card-front">
+                                    <figure>
+                                        <div class="img-bg"></div>
+                                        <img src={rolesLogo} alt="Roles" />
+                                        <figcaption>Roles</figcaption>
+                                    </figure>
+                                </div>
+
+                                <div class="card-back">
+                                    <figure>
+                                        <div class="img-bg"></div>
+                                        <img src={rolesLogo} alt="Roles" />
+                                    </figure>
+                                    <div className='car-back-content'>
+                                    <h1>Roles</h1>
+                                        <hr className="mt-0 mb-4" />
+                                    <p>
                             Roles define the set of permissions and responsibilities associated with various job positions
                             or functions within an organization. Roles offer a flexible and scalable way to manage access control
                             by grouping users with similar responsibilities. Key considerations in defining roles include:
@@ -68,19 +112,46 @@ const About = () => {
                                 and the RBAC system ensures that permissions are consistently applied.
                             </li>
                         </ul>
-                    </div>
-                    <div class="section-image">
-                        <img src={rolesLogo} alt="User Groups" />
-                    </div>
-                </section>
-                <section id="user-groups" class="section">
-                    <div class="section-image">
-                        <img src={userGroupsLogo} alt="User Groups" />
-                    </div>
-                    <div class="section-text">
-                        <h1>User Groups</h1>
-                        <hr className="mt-0 mb-4" />
-                        <p>
+                                    </div>
+
+                                    <div class="design-container">
+                                        <span class="design design--1"></span>
+                                        <span class="design design--2"></span>
+                                        <span class="design design--3"></span>
+                                        <span class="design design--4"></span>
+                                        <span class="design design--5"></span>
+                                        <span class="design design--6"></span>
+                                        <span class="design design--7"></span>
+                                        <span class="design design--8"></span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </Col>
+                </Row>
+                <Row className='card-row'>
+                    <Col className='card-cell'>
+                    <div class="flip-card-container" >
+                            <div class="flip-card">
+
+                                <div class="card-front">
+                                    <figure>
+                                        <div class="img-bg"></div>
+                                        <img src={userGroupsLogo} alt="User Groups" />
+                                        <figcaption>User Groups</figcaption>
+                                    </figure>
+                                </div>
+
+                                <div class="card-back">
+                                    <figure>
+                                        <div class="img-bg"></div>
+                                        <img src={userGroupsLogo} alt="User Groups" />
+                                    </figure>
+                                    <div className='car-back-content'>
+                                    <h1>User Groups</h1>
+                                        <hr className="mt-0 mb-4" />
+                                    <p>
                             User-Groups are a way to group users who share similar characteristics, roles, or privileges.
                             By categorizing users into groups, organizations can streamline administration and enhance security. Key aspects of user-groups include:
                         </p>
@@ -102,17 +173,44 @@ const About = () => {
                                 reducing the need for individual user configurations.
                             </li>
                         </ul>
-                    </div>
+                                    </div>
 
-                </section>
+                                    <div class="design-container">
+                                        <span class="design design--1"></span>
+                                        <span class="design design--2"></span>
+                                        <span class="design design--3"></span>
+                                        <span class="design design--4"></span>
+                                        <span class="design design--5"></span>
+                                        <span class="design design--6"></span>
+                                        <span class="design design--7"></span>
+                                        <span class="design design--8"></span>
+                                    </div>
+                                </div>
 
+                            </div>
+                        </div>
+                    </Col>
+                    <Col className='card-cell'>
+                    <div class="flip-card-container" >
+                            <div class="flip-card">
 
+                                <div class="card-front">
+                                    <figure>
+                                        <div class="img-bg"></div>
+                                        <img src={roleGroupsLogo} alt="Role Groups" />
+                                        <figcaption>Role Groups</figcaption>
+                                    </figure>
+                                </div>
 
-                <section id="role-groups" class="section right">
-                    <div class="section-text">
-                        <h1>Role Groups</h1>
-                        <hr className="mt-0 mb-4" />
-                        <p>
+                                <div class="card-back">
+                                    <figure>
+                                        <div class="img-bg"></div>
+                                        <img src={roleGroupsLogo} alt="Role Groups" />
+                                    </figure>
+                                    <div className='car-back-content'>
+                                    <h1>Role Groups</h1>
+                                        <hr className="mt-0 mb-4" />
+                                    <p>
                             Role-Groups represent an advanced layer of access control in RBAC systems.
                             They group roles together, facilitating fine-grained control over the entire role hierarchy.
                             Key considerations when working with role-groups include:
@@ -134,20 +232,46 @@ const About = () => {
                             </li>
 
                         </ul>
-                    </div>
-                    <div class="section-image">
-                        <img src={roleGroupsLogo} alt="Role Groups" />
-                    </div>
-                </section>
+                                    </div>
 
-                <section id="permissions" class="section left">
-                    <div class="section-image">
-                        <img src={userPermissions} alt="Permissions" />
-                    </div>
-                    <div class="section-text">
-                        <h1>Permissions</h1>
-                        <hr className="mt-0 mb-4" />
-                        <p>
+                                    <div class="design-container">
+                                        <span class="design design--1"></span>
+                                        <span class="design design--2"></span>
+                                        <span class="design design--3"></span>
+                                        <span class="design design--4"></span>
+                                        <span class="design design--5"></span>
+                                        <span class="design design--6"></span>
+                                        <span class="design design--7"></span>
+                                        <span class="design design--8"></span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </Col>
+                </Row>
+                <Row className='card-row'>
+                <Col className='card-cell'>
+                    <div class="flip-card-container full-card" >
+                            <div class="flip-card">
+
+                                <div class="card-front">
+                                    <figure>
+                                        <div class="img-bg"></div>
+                                        <img src={userPermissions} alt="Permissions" />
+                                        <figcaption>Permissions</figcaption>
+                                    </figure>
+                                </div>
+
+                                <div class="card-back">
+                                    <figure>
+                                        <div class="img-bg"></div>
+                                        <img src={userPermissions} alt="Permissions" />
+                                    </figure>
+                                    <div className='car-back-content'>
+                                    <h1>Permissions</h1>
+                                        <hr className="mt-0 mb-4" />
+                                    <p>
                             Permissions are the core of an RBAC system, serving as the key identifiers for actions 
                             that users can perform within an organization's ecosystem. 
                             They are a critical component, as they define the precise level of access and control a user has over resources.
@@ -167,9 +291,24 @@ const About = () => {
                                 </li>
                             </ul>
                         </p>
-                    </div>
+                                    </div>
 
-                </section>
+                                    <div class="design-container">
+                                        <span class="design design--1"></span>
+                                        <span class="design design--2"></span>
+                                        <span class="design design--3"></span>
+                                        <span class="design design--4"></span>
+                                        <span class="design design--5"></span>
+                                        <span class="design design--6"></span>
+                                        <span class="design design--7"></span>
+                                        <span class="design design--8"></span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </Col>
+                </Row>
             </main>
         </div>
     );
