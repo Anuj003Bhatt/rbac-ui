@@ -8,38 +8,61 @@ import {
   MDBIcon
 } from 'mdb-react-ui-kit';
 import CustomGrid from '../common/CustomGrid';
-import { Button, CloseButton, Col, Row } from 'react-bootstrap';
+import { Button, Col, Row } from 'react-bootstrap';
 import { addUserInGroups, getListOfUserGroups } from '../groups/GroupsService';
 import SearchBar from '../common/SearchBar';
 import { assignRoleToUser, getListOfRoles } from '../roles/RoleService';
 import { AxiosError } from 'axios';
+import { getUserById } from './UserService';
 
 const UserDetails = (props) => {
 
+  const [user, setUser] = useState(null);
   const [groups, setGroups] = useState([]);
   const [roles, setRoles] = useState([]);
   const [selectedGroup, setSelectedGroup] = useState(null);
   const [selectedRole, setSelectedRole] = useState(null);
 
-  useEffect(() => {
+  const getUser = (id) => {
+    getUserById(id)
+    .then((response) => {
+      setUser(response);
+    }).catch((error) => {
+      console.error('Error fetching groups:', error);
+    })
+  }
+
+  const getGroups = () => {
     getListOfUserGroups()
-      .then((response) => {
-        setGroups(response);
-      }).catch((error) => {
-        console.error('Error fetching groups:', error);
-      });
+    .then((response) => {
+      setGroups(response);
+    }).catch((error) => {
+      console.error('Error fetching groups:', error);
+    });
+  }
+
+  const getRoles = () => {
     getListOfRoles()
       .then((response) => {
         setRoles(response);
       }).catch((error) => {
         console.error('Error fetching roles:', error);
       });
-  }, [])
+  }
+  useEffect(() => {
+    getUser(props.userId);
+    getGroups();
+    getRoles();
+  }, [props.userId]);
 
   const addUserToGroup = (event) => {
     try {
       if (selectedGroup) {
-        addUserInGroups(props.user.id, selectedGroup)
+        addUserInGroups(user.id, selectedGroup).then((response) => {
+            getUser(user.id)
+          }
+        );
+        
       }
     } catch (error) {
       switch (error?.code) {
@@ -55,7 +78,9 @@ const UserDetails = (props) => {
   const addUserToRole = (event) => {
     try {
       if (selectedRole) {
-        assignRoleToUser(props.user.id, selectedRole)
+        assignRoleToUser(user.id, selectedRole).then((response)=> {
+          getUser(user.id);
+        });
       } else {
         alert("No role selected")
       }
@@ -73,10 +98,7 @@ const UserDetails = (props) => {
 
   return (
     <MDBCardBody className="p-4">
-      <div style={{ float: 'right' }}>
-        <CloseButton onClick={props.setDisplayUserDetails} />
-      </div>
-      <MDBTypography tag='h3'>User Details</MDBTypography>
+      <MDBTypography tag='h1'>User Details</MDBTypography>
 
       <MDBCardText className="small">
         <MDBIcon far icon="star" size="lg" />
@@ -87,22 +109,30 @@ const UserDetails = (props) => {
         <hr className="mt-0 mb-4" />
         <MDBRow className="pt-1">
           <MDBCol size="6" className="mb-3">
-            <MDBTypography tag="h6">Name</MDBTypography>
-            <MDBCardText className="text-muted">{props.user.name}</MDBCardText>
+            <MDBTypography tag="h6">ID</MDBTypography>
+            <MDBCardText className="text-muted">{user?.id}</MDBCardText>
           </MDBCol>
           <MDBCol size="6" className="mb-3">
-            <MDBTypography tag="h6">Status</MDBTypography>
-            <MDBCardText className="text-muted"><strong>{props.user.status}</strong></MDBCardText>
+            <MDBTypography tag="h6">Name</MDBTypography>
+            <MDBCardText className="text-muted">{user?.name}</MDBCardText>
           </MDBCol>
         </MDBRow>
+        
         <MDBRow className="pt-1">
           <MDBCol size="6" className="mb-3">
-            <MDBTypography tag="h6">Email</MDBTypography>
-            <MDBCardText className="text-muted">{props.user.email}</MDBCardText>
+            <MDBTypography tag="h6">Status</MDBTypography>
+            <MDBCardText className="text-muted"><strong>{user?.status}</strong></MDBCardText>
           </MDBCol>
           <MDBCol size="6" className="mb-3">
+            <MDBTypography tag="h6">Email</MDBTypography>
+            <MDBCardText className="text-muted">{user?.email}</MDBCardText>
+          </MDBCol>
+        </MDBRow>
+
+        <MDBRow>
+          <MDBCol size="6" className="mb-3">
             <MDBTypography tag="h6">Phone</MDBTypography>
-            <MDBCardText className="text-muted">{props.user.phone}</MDBCardText>
+            <MDBCardText className="text-muted">{user?.phone}</MDBCardText>
           </MDBCol>
         </MDBRow>
         <hr className="mt-0 mb-4" />
@@ -124,7 +154,7 @@ const UserDetails = (props) => {
             hideToolbar={true}
             gridActionText="User Roles"
             clickAction={() => alert("Here")}
-            data={props.user.roles} columns={
+            data={user?user.roles:[]} columns={
               [
                 // { field: 'id', headerName: 'ID', flex: 1 },
                 { field: 'name', headerName: 'Role', flex: 1 }
@@ -154,7 +184,7 @@ const UserDetails = (props) => {
               hideToolbar={true}
               gridActionText="User Roles"
               clickAction={() => alert("Here")}
-              data={props.user.userGroups} columns={
+              data={user?user.userGroups:[]} columns={
                 [
                   // { field: 'id', headerName: 'ID', flex: 1 },
                   { field: 'name', headerName: 'Group', flex: 1 }

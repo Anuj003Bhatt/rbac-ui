@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './SearchBar.css';
 import { GridSearchIcon } from '@mui/x-data-grid';
 import SearchResultList from './SearchResultList';
@@ -15,6 +15,21 @@ const SearchBar = (props) => {
         
     }
 
+    const wrapperRef = useRef(null);
+    useEffect(() => {
+        function handleClickOutside(event) {
+          if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+            setShowResults(false);
+          }
+        }
+        // Bind the event listener
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+          // Unbind the event listener on clean up
+          document.removeEventListener("mousedown", handleClickOutside);
+        };
+      }, [wrapperRef]);
+
     const handleChange = (event) => {
         setUserInputText(event.target.value);
         setShowResults(true);
@@ -27,7 +42,7 @@ const SearchBar = (props) => {
     }
 
     return (
-        <div className='root'>
+        <div className='root' ref={wrapperRef}>
             <div className="input-wrapper">
                <GridSearchIcon id="search-icon"/>
                <input

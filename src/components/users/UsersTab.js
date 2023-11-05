@@ -78,7 +78,10 @@ const UsersTab = () => {
         ariaHideApp={false}
         contentLabel='User Details'
         onRequestClose={() => setDisplayUserDetails(false)}>
-        <UserDetails setDisplayUserDetails={() => setDisplayUserDetails(false)} user={selectedUser}/>
+          <div style={{ float: 'right' }}>
+          <CloseButton onClick={() => setDisplayUserDetails(false)} />
+        </div>
+        <UserDetails setDisplayUserDetails={() => setDisplayUserDetails(false)} userId={selectedUser?selectedUser.id:null}/>
       </ReactModal>
       <ReactModal
         isOpen={displayNewUserForm}

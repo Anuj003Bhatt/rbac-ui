@@ -1,6 +1,7 @@
 import './SearchResultList.css';
 
 const SearchResultList = (props) => {
+
     return (
         <div className="results-list">
             {

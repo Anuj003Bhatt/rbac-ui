@@ -15,3 +15,7 @@ input:focus {
 #search-icon{
     color: royalblue;
 }
+
+.hide {
+    display: None;
+}

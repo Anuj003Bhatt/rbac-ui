@@ -12,6 +12,17 @@ export const getListOfUsers = async () => {
       });
 }
 
+export const getUserById = async (id) => {
+  // Fetch the list of users from the backend API
+  return await axios.get(`http://${SERVICES.rbac.host}:${SERVICES.rbac.port}/users/_byId/${id}`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error;
+    });
+}
+
 export const disableUser = async (user) => {
     return await axios.patch(`http://${SERVICES.rbac.host}:${SERVICES.rbac.port}/users/${user.id}/disable`)
     .catch((error) => {
