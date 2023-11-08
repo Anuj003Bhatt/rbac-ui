@@ -5,12 +5,10 @@ import ReactModal from 'react-modal';
 import { CloseButton } from 'react-bootstrap';
 import AddUserGroup from './AddUserGroup';
 import { getListOfUserGroups } from './UserGroupsService';
-import { useNavigate } from 'react-router-dom';
 
 const UserGroupsTab = () => {
 
   const [groups, setGroups] = useState([]);
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [displayNewUserGroupForm, setDisplayNewUserGroupForm] = useState(false);
 
@@ -21,7 +19,7 @@ const UserGroupsTab = () => {
   }
 
   const renderUserGroupDetail = (group) => {
-    navigate(`/userGroup/${group.id}`);
+    window.open(`/userGroup/${group.id}`, '_blank')
   }
 
   useEffect(() => {

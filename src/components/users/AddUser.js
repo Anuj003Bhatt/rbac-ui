@@ -110,9 +110,11 @@ const AddUser = () => {
                     </Form.Group>
                 </Row>
                 <Row className="mb-3">
-                    <Button style={{ margin: '1%' }} variant="primary" type="submit">
-                        Submit
-                    </Button>
+                    <Form.Group className="col col-sm-1" >
+                        <Button style={{ margin: '1%' }} variant="primary" type="submit">
+                            Submit
+                        </Button>
+                    </Form.Group>
                 </Row>
                 <Row className="mb-3">
                     <Alert show={isError} key='danger' variant='danger'>

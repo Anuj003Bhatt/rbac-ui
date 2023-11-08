@@ -10,6 +10,8 @@ import {
 import CustomGrid from '../common/CustomGrid';
 import { useParams } from 'react-router-dom';
 import { getRoleGroupById, getRolesInRoleGroup } from './RoleGroupService';
+import '../DetailsComponent.css';
+import Home from '../home/Home';
 
 const RoleGroupDetails = (props) => {
   const { groupId } = useParams();
@@ -37,7 +39,9 @@ const RoleGroupDetails = (props) => {
   }, [groupId]);
   
   return (
-    <MDBCardBody className="p-4">
+    <div>
+      <Home renderMain={false}/>
+    <MDBCardBody className="p-4 main">
       <MDBTypography tag='h3'>Role Group Details</MDBTypography>
 
       <MDBCardText className="small">
@@ -81,6 +85,7 @@ const RoleGroupDetails = (props) => {
         
       </MDBCardBody>
     </MDBCardBody>
+    </div>
   );
 }
 

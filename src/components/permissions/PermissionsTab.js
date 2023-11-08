@@ -6,10 +6,8 @@ import CustomGrid from '../common/CustomGrid';
 import { CloseButton } from 'react-bootstrap';
 import ReactModal from 'react-modal';
 import AddPermission from './AddPermission';
-import { useNavigate } from 'react-router-dom';
 
 const PermissionsTab = () => {
-  const navigate = useNavigate();
   const [permissions, setPermissions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [displayNewPermissionForm, setDisplayNewPermissionForm] = useState(false);
@@ -21,7 +19,7 @@ const PermissionsTab = () => {
   } 
 
   const viewPermissionDetailsPage = (permission) => {
-    navigate(`permission/${permission.id}`);
+    window.open(`permission/${permission.id}`,'_blank');
   }
   useEffect(() => {
     // Fetch the list of roles from the backend API

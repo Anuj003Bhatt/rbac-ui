@@ -5,10 +5,8 @@ import ReactModal from 'react-modal';
 import { CloseButton } from 'react-bootstrap';
 import AddRole from './AddRole';
 import { getListOfRoles } from './RoleService';
-import { useNavigate } from 'react-router-dom';
 
 const RolesTab = () => {
-  const navigate = useNavigate();
   const [roles, setRoles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [displayNewRoleForm, setDisplayNewRoleForm] = useState(false);
@@ -20,7 +18,7 @@ const RolesTab = () => {
   }
   
   const viewRoleDetailsPage = (role) => {
-    navigate(`/role/${role.id}`);
+    window.open(`/role/${role.id}`, '_blank');
   }
   
   useEffect(() => {

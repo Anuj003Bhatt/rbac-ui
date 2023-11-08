@@ -3,14 +3,12 @@ import CustomDropdown from '../common/CustomDropdown';
 import CustomGrid from '../common/CustomGrid';
 import ReactModal from 'react-modal';
 import { CloseButton } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
 import { getListOfRoleGroups } from './RoleGroupService';
 import AddRoleGroup from './AddRoleGroup';
 
 const RoleGroupsTab = () => {
 
   const [groups, setGroups] = useState([]);
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [displayNewRoleGroupForm, setDisplayNewRoleGroupForm] = useState(false);
 
@@ -21,18 +19,18 @@ const RoleGroupsTab = () => {
   }
 
   const renderRoleGroupDetail = (group) => {
-    navigate(`/roleGroup/${group.id}`);
+    window.open(`/roleGroup/${group.id}`, '_blank');
   }
 
   useEffect(() => {
     getListOfRoleGroups()
-    .then( (response) => {
-      setGroups(response);
-      setLoading(false);
-    }).catch((error) => {
-      console.error('Error fetching role groups:', error);
-      setLoading(false);
-    });
+      .then((response) => {
+        setGroups(response);
+        setLoading(false);
+      }).catch((error) => {
+        console.error('Error fetching role groups:', error);
+        setLoading(false);
+      });
   }, []);
 
 

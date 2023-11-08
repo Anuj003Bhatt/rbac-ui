@@ -5,17 +5,15 @@ import { CloseButton } from 'react-bootstrap';
 import AddUser from './AddUser';
 import CustomGrid from '../common/CustomGrid';
 import { disableUser, enableUser, getListOfUsers } from './UserService';
-import { useNavigate } from 'react-router-dom';
 
 const UsersTab = () => {
 
   const [users, setUsers] = useState([]);
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [displayNewUserForm, setDisplayNewUserForm] = useState(false);
 
   useEffect(() => {
-      getListOfUsers()
+    getListOfUsers()
       .then(
         (response) => {
           setUsers(response);
@@ -29,7 +27,7 @@ const UsersTab = () => {
 
   const getActionsForUser = (user) => {
     const commonActions = {
-      'View User':() => viewUserDetailPage(user)
+      'View User': () => viewUserDetailPage(user)
     }
     if (user.status === 'ACTIVE') {
       return {
@@ -45,7 +43,8 @@ const UsersTab = () => {
   }
 
   const viewUserDetailPage = (user) => {
-    navigate(`/user/${user.id}`);
+    // navigate(`/user/${user.id}`);
+    window.open(`/user/${user.id}`, '_blank')
   }
 
   const columns = [
@@ -70,7 +69,7 @@ const UsersTab = () => {
   }
 
   return (
-    <div style={{height:'100%', minHeight:'100%'}}>
+    <div style={{ height: '100%', minHeight: '100%' }}>
       <ReactModal
         isOpen={displayNewUserForm}
         ariaHideApp={false}
@@ -81,7 +80,7 @@ const UsersTab = () => {
         </div>
         <AddUser />
       </ReactModal>
-      <div style={{ height:'100%', width: '100%' }}>
+      <div style={{ height: '100%', width: '100%' }}>
         <CustomGrid
           gridActionText="New User"
           clickAction={() => setDisplayNewUserForm(true)}
