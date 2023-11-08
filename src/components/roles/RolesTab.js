@@ -5,15 +5,24 @@ import ReactModal from 'react-modal';
 import { CloseButton } from 'react-bootstrap';
 import AddRole from './AddRole';
 import { getListOfRoles } from './RoleService';
-
-const actions = ['View Role Details', 'Edit Role']
+import { useNavigate } from 'react-router-dom';
 
 const RolesTab = () => {
-
+  const navigate = useNavigate();
   const [roles, setRoles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [displayNewRoleForm, setDisplayNewRoleForm] = useState(false);
 
+  const getActionsForRole = (role) => {
+    return {
+      'View Role Details': () => viewRoleDetailsPage(role)
+    }
+  }
+  
+  const viewRoleDetailsPage = (role) => {
+    navigate(`/role/${role.id}`);
+  }
+  
   useEffect(() => {
     // Fetch the list of roles from the backend API
     getListOfRoles()
@@ -39,7 +48,7 @@ const RolesTab = () => {
       headerName: 'Actions',
       flex: 1,
       renderCell: (params) => (
-        <CustomDropdown actions={actions}/>
+        <CustomDropdown actions={getActionsForRole(params.row)}/>
       ),
     },
   ];
@@ -61,7 +70,7 @@ const RolesTab = () => {
         </div>
         <AddRole/>
       </ReactModal>
-      <div style={{ height: 400, width: '100%' }}>
+      <div style={{ height: 'auto', width: '100%' }}>
       <CustomGrid
           gridActionText="Add Role"
           clickAction={() => setDisplayNewRoleForm(true)}

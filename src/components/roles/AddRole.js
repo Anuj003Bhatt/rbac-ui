@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Row } from "react-bootstrap";
+import { Row, Alert } from "react-bootstrap";
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Form from 'react-bootstrap/Form';
@@ -11,20 +11,16 @@ const AddRole = () => {
 
     const [errorMessage, setErrorMessage] = useState('');
     const [roleDetails, setRoleDetails] = useState({});
-    const getKey = (targetId) => {
-        switch (targetId) {
-            case 'formName' :
-                return 'name'
-            case 'formDescription' :
-                return 'description'
-            default : return null;
-        }
+    const [isError, setIsError] = useState(false);
+    const formKeyMapping = {
+        'formName': 'name',
+        'formDescription': 'description',
     }
     const handleChange = (e) => {
         setRoleDetails((old) => {
             return {
                 ...old,
-                [getKey(e.target.id)]: e.target.value
+                [formKeyMapping[e.target.id]]: e.target.value
             }
         });
     };
@@ -35,8 +31,10 @@ const AddRole = () => {
             'Access-Control-Allow-Origin': '*'
         }).then((response) => {
             setErrorMessage('');
+            setIsError(false);
             event.target.submit();
         }).catch((error) => {
+            setIsError(true);
             switch (error?.code) {
                 case AxiosError.ERR_NETWORK:
                     setErrorMessage('Error: Unable to submit request to the server');
@@ -84,7 +82,9 @@ const AddRole = () => {
                     </Form.Group>
                 </Row>
                 <Row className="mb-3">
-                    <div style={{color: 'red'}}>{errorMessage}</div>
+                    <Alert show={isError} key='danger' variant='danger'>
+                        {errorMessage}
+                    </Alert>
                 </Row>
             </Form>
             

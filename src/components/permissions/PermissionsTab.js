@@ -6,15 +6,23 @@ import CustomGrid from '../common/CustomGrid';
 import { CloseButton } from 'react-bootstrap';
 import ReactModal from 'react-modal';
 import AddPermission from './AddPermission';
-
-const actions = ['View Permission Details', 'Edit Permission']
+import { useNavigate } from 'react-router-dom';
 
 const PermissionsTab = () => {
-
+  const navigate = useNavigate();
   const [permissions, setPermissions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [displayNewPermissionForm, setDisplayNewPermissionForm] = useState(false);
 
+  const getActionsForPermissions = (permission) => {
+    return {
+      'View Permission': () => viewPermissionDetailsPage(permission)
+    }
+  } 
+
+  const viewPermissionDetailsPage = (permission) => {
+    navigate(`permission/${permission.id}`);
+  }
   useEffect(() => {
     // Fetch the list of roles from the backend API
     axios.get(`http://${SERVICES.rbac.host}:${SERVICES.rbac.port}/permissions`)
@@ -41,7 +49,7 @@ const PermissionsTab = () => {
       headerName: 'Actions',
       flex: 1,
       renderCell: (params) => (
-        <CustomDropdown actions={actions}/>
+        <CustomDropdown actions={getActionsForPermissions(params.row)}/>
       ),
     },
   ];
@@ -63,7 +71,7 @@ const PermissionsTab = () => {
         </div>
         <AddPermission/>
       </ReactModal>
-      <div style={{ height: 400, width: '100%' }}>
+      <div>
         <CustomGrid
           gridActionText="Add Permission"
           clickAction={() => setDisplayNewPermissionForm(true)}

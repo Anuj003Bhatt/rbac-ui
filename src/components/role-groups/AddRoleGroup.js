@@ -7,18 +7,17 @@ import axios, { AxiosError } from "axios";
 import { SERVICES } from '../../utilities/Constants';
 import { Divider } from "@mui/material";
 
-const AddPermission = () => {
+const AddRoleGroup = () => {
 
     const [errorMessage, setErrorMessage] = useState('');
-    const [permissionDetails, setPermissionDetails] = useState({});
+    const [groupDetails, setGroupDetails] = useState({});
     const [isError, setIsError] = useState(false);
     const formKeyMapping = {
         'formName': 'name',
         'formDescription': 'description',
-        'formAccessType': 'accessType'
     }
     const handleChange = (e) => {
-        setPermissionDetails((old) => {
+        setGroupDetails((old) => {
             return {
                 ...old,
                 [formKeyMapping[e.target.id]]: e.target.value
@@ -28,7 +27,7 @@ const AddPermission = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        axios.post(`http://${SERVICES.rbac.host}:${SERVICES.rbac.port}/permissions`, permissionDetails, {
+        axios.post(`http://${SERVICES.rbac.host}:${SERVICES.rbac.port}/roles/groups`, groupDetails, {
             'Access-Control-Allow-Origin': '*'
         }).then((response) => {
             setErrorMessage('');
@@ -49,7 +48,7 @@ const AddPermission = () => {
     return (
         <div>
             <Row className="mb-3" >
-                <h1>Add Permission</h1>
+                <h1>Add Role Group</h1>
                 <Divider component="h1" />
             </Row>
             <Form style={{ padding: '2%' }} onSubmit={handleSubmit}>
@@ -59,7 +58,7 @@ const AddPermission = () => {
                         <Form.Control
                             required
                             type="text"
-                            placeholder="Enter permission name..."
+                            placeholder="Enter group name..."
                             onChange={(e) => handleChange(e)}
                         />
                     </Form.Group>
@@ -70,25 +69,9 @@ const AddPermission = () => {
                         <Form.Control
                             required
                             type="textarea"
-                            placeholder="Permission Description..."
+                            placeholder="Group Description..."
                             onChange={(e) => handleChange(e)}
                         />
-                    </Form.Group>
-                </Row>
-                <Row className="mb-3">
-                    <Form.Group className="col col-sm-6" controlId="formAccessType">
-                        <Form.Label>Access Type</Form.Label>
-                        <Form.Select
-                            required
-                            aria-label="Select Access Type"
-                            onChange={(e) => handleChange(e)}
-                            >
-                            <option>Select one</option>
-                            <option value="Read">Read</option>
-                            <option value="Create">Create</option>
-                            <option value="Update">Update</option>
-                            <option value="Delete">Delete</option>
-                        </Form.Select>
                     </Form.Group>
                 </Row>
                 <Row className="mb-3">
@@ -109,4 +92,4 @@ const AddPermission = () => {
     );
 };
 
-export default AddPermission;
+export default AddRoleGroup;

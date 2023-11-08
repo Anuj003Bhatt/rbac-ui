@@ -8,17 +8,22 @@ import {
   MDBIcon
 } from 'mdb-react-ui-kit';
 import CustomGrid from '../common/CustomGrid';
-import { CloseButton } from 'react-bootstrap';
-import { getListOfUserInGroups } from './GroupsService';
-import { getListOfUsers } from '../users/UserService';
+import { getListOfUserInGroups, getUserGroupById } from './UserGroupsService';
+import { useParams } from 'react-router-dom';
 
 const UserGroupDetails = (props) => {
+  const { groupId } = useParams();
+  const [group, setGroup] = useState({});
   const [groupUsers, setGroupUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [users, setUsers] = useState(true);
 
   useEffect(() => {
-    getListOfUserInGroups(props.group.id)
+    getUserGroupById(groupId).then(
+      (response) => setGroup(response)
+    ).catch((error)=> {
+      console.log(`Error fetching user group for id ${groupId}: `, error);
+    })
+    getListOfUserInGroups(groupId)
     .then(
       (response) => {
         setGroupUsers(response);
@@ -28,13 +33,10 @@ const UserGroupDetails = (props) => {
       console.log('Error fetching users:', error);
       setLoading(false);
     });
-  }, [props.group.id]);
+  }, [groupId]);
   
   return (
     <MDBCardBody className="p-4">
-      <div style={{ float: 'right' }}>
-        <CloseButton onClick={props.setDisplayUserGroupDetails} />
-      </div>
       <MDBTypography tag='h3'>User Group Details</MDBTypography>
 
       <MDBCardText className="small">
@@ -44,12 +46,18 @@ const UserGroupDetails = (props) => {
       <MDBCardBody className="p-4">
         <MDBRow className="pt-1">
           <MDBCol size="6" className="mb-3">
-            <MDBTypography tag="h6">Name</MDBTypography>
-            <MDBCardText className="text-muted">{props.group.name}</MDBCardText>
+            <MDBTypography tag="h6">ID</MDBTypography>
+            <MDBCardText className="text-muted">{group.id}</MDBCardText>
           </MDBCol>
           <MDBCol size="6" className="mb-3">
+            <MDBTypography tag="h6">Name</MDBTypography>
+            <MDBCardText className="text-muted">{group.name}</MDBCardText>
+          </MDBCol>
+          </MDBRow>
+          <MDBRow>
+          <MDBCol size="6" className="mb-3">
             <MDBTypography tag="h6">Description</MDBTypography>
-            <MDBCardText className="text-muted">{props.group.description}</MDBCardText>
+            <MDBCardText className="text-muted">{group.description}</MDBCardText>
           </MDBCol>
         </MDBRow>
         

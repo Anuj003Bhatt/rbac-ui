@@ -1,0 +1,24 @@
+
+.bar {
+  font-size: 2vh;
+}
+
+.barItemBrand {
+  margin-left: 2vh;
+
+}
+
+.barItem {
+  margin-right: 2vh;
+}
+  .navLink::after {
+    content: '';
+    width: 0px;
+    height: 2px;
+    display: block;
+    background: blue;
+    transition: 300ms;
+  }
+  .navLink:hover:after {
+    width: 100%;
+  }

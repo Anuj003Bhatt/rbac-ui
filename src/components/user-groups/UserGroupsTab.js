@@ -4,16 +4,15 @@ import CustomGrid from '../common/CustomGrid';
 import ReactModal from 'react-modal';
 import { CloseButton } from 'react-bootstrap';
 import AddUserGroup from './AddUserGroup';
-import { getListOfUserGroups } from './GroupsService';
-import UserGroupDetails from './GroupDetails';
+import { getListOfUserGroups } from './UserGroupsService';
+import { useNavigate } from 'react-router-dom';
 
-const GroupsTab = () => {
+const UserGroupsTab = () => {
 
   const [groups, setGroups] = useState([]);
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const [selectedGroup, setSelectedGroup] = useState(null);
   const [displayNewUserGroupForm, setDisplayNewUserGroupForm] = useState(false);
-  const [displayUserGroupDetails, setDisplayUserGroupDetails] = useState(false);
 
   const getActionsForGroup = (group) => {
     return {
@@ -22,8 +21,7 @@ const GroupsTab = () => {
   }
 
   const renderUserGroupDetail = (group) => {
-    setSelectedGroup(group);
-    setDisplayUserGroupDetails(true);
+    navigate(`/userGroup/${group.id}`);
   }
 
   useEffect(() => {
@@ -59,17 +57,6 @@ const GroupsTab = () => {
   return (
     <div>
       <ReactModal
-        isOpen={displayUserGroupDetails}
-        ariaHideApp={false}
-        contentLabel='User Group Details'
-        onRequestClose={() => setDisplayUserGroupDetails(false)}
-      >
-        <UserGroupDetails
-          setDisplayUserGroupDetails={() => setDisplayUserGroupDetails(false)}
-          group={selectedGroup}
-          />
-      </ReactModal>
-      <ReactModal
         isOpen={displayNewUserGroupForm}
         ariaHideApp={false}
         contentLabel='Add New User Group'
@@ -80,7 +67,7 @@ const GroupsTab = () => {
         </div>
         <AddUserGroup />
       </ReactModal>
-      <div style={{ height: 400, width: '100%' }}>
+      <div style={{ height: 'auto', width: '100%' }}>
         <CustomGrid
           gridActionText="Add User Group"
           clickAction={() => setDisplayNewUserGroupForm(true)}
@@ -91,4 +78,4 @@ const GroupsTab = () => {
   );
 };
 
-export default GroupsTab;
+export default UserGroupsTab;

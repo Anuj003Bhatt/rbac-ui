@@ -1,36 +1,30 @@
 import { useState } from "react";
-import { Row } from "react-bootstrap";
+import { Alert, Row } from "react-bootstrap";
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Form from 'react-bootstrap/Form';
 import axios, { AxiosError } from "axios";
-import { SERVICES } from '../../utilities/Constants';
 import { Divider } from "@mui/material";
+import { SERVICES } from "../../utilities/Constants";
 
 const AddUser = () => {
 
+    const formKeyMapping = {
+        'formName' : 'name',
+        'formUsername': 'userName',
+        'formEmail': 'email',
+        'formPhone': 'phone',
+        'formPassword': 'password'
+    }
+    const [isError, setIsError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [userDetails, setUserDetails] = useState({});
-    const getKey = (targetId) => {
-        switch (targetId) {
-            case 'formName' :
-                return 'name'
-            case 'formUsername' :
-                return 'userName'
-            case 'formEmail' :
-                return 'email'
-            case 'formPhone' :
-                return 'phone'
-            case 'formPassword' :
-                return 'password'
-            default : return null;
-        }
-    }
+    
     const handleChange = (e) => {
         setUserDetails((old) => {
             return {
                 ...old,
-                [getKey(e.target.id)]: e.target.value
+                [formKeyMapping[e.target.id]]: e.target.value
             }
         });
     };
@@ -41,8 +35,10 @@ const AddUser = () => {
             'Access-Control-Allow-Origin': '*'
         }).then((response) => {
             setErrorMessage('');
+            setIsError(false);
             event.target.submit();
         }).catch((error) => {
+            setIsError(true);
             switch (error?.code) {
                 case AxiosError.ERR_NETWORK:
                     setErrorMessage('Error: Unable to submit request to the server');
@@ -52,7 +48,6 @@ const AddUser = () => {
             }
         });
     }
-
     return (
         <div>
             <Row className="mb-3" >
@@ -120,7 +115,9 @@ const AddUser = () => {
                     </Button>
                 </Row>
                 <Row className="mb-3">
-                    <div style={{color: 'red'}}>{errorMessage}</div>
+                    <Alert show={isError} key='danger' variant='danger'>
+                        {errorMessage}
+                    </Alert>
                 </Row>
             </Form>
             

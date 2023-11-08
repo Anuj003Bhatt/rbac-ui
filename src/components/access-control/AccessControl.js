@@ -4,11 +4,12 @@ import { Tab, Box } from '@mui/material';
 import TabPanel from '@mui/lab/TabPanel';
 import TabContext from "@mui/lab/TabContext";
 import UsersTab from '../users/UsersTab';
-import GroupsTab from '../groups/GroupsTab';
+import UserGroupsTab from '../user-groups/UserGroupsTab';
 import { TabList } from '@mui/lab';
 import RolesTab from '../roles/RolesTab';
 import PermissionsTab from '../permissions/PermissionsTab';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
+import RoleGroupsTab from '../role-groups/RoleGroupsTab';
 
 const AccessControl = () => {
     const [selectedTab, setSelectedTab] = useState('1');
@@ -27,21 +28,25 @@ const AccessControl = () => {
                     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                         <TabList onChange={handleChange} aria-label="lab API tabs example">
                             <Tab label="Users" value="1" />
-                            <Tab label="Groups" value="2" />
-                            <Tab label="Roles" value="3" />
-                            <Tab label="Permissions" value="4" />
+                            <Tab label="Roles" value="2" />
+                            <Tab label="User Groups" value="3" />
+                            <Tab label="Role Groups" value="4" />
+                            <Tab label="Permissions" value="5" />
                         </TabList>
                     </Box>
                     <TabPanel value="1">
                         <UsersTab />
                     </TabPanel>
                     <TabPanel value="2">
-                        <GroupsTab />
-                    </TabPanel>
-                    <TabPanel value="3">
                         <RolesTab />
                     </TabPanel>
+                    <TabPanel value="3">
+                        <UserGroupsTab />
+                    </TabPanel>
                     <TabPanel value="4">
+                        <RoleGroupsTab/>
+                    </TabPanel>
+                    <TabPanel value="5">
                         <PermissionsTab />
                     </TabPanel>
                 </TabContext>

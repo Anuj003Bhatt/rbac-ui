@@ -9,14 +9,15 @@ import {
 } from 'mdb-react-ui-kit';
 import CustomGrid from '../common/CustomGrid';
 import { Button, Col, Row } from 'react-bootstrap';
-import { addUserInGroups, getListOfUserGroups } from '../groups/GroupsService';
+import { addUserInGroups, getListOfUserGroups } from '../user-groups/UserGroupsService';
 import SearchBar from '../common/SearchBar';
 import { assignRoleToUser, getListOfRoles } from '../roles/RoleService';
 import { AxiosError } from 'axios';
 import { getUserById } from './UserService';
+import { useParams } from 'react-router-dom';
 
 const UserDetails = (props) => {
-
+  const { userId } = useParams();
   const [user, setUser] = useState(null);
   const [groups, setGroups] = useState([]);
   const [roles, setRoles] = useState([]);
@@ -49,11 +50,14 @@ const UserDetails = (props) => {
         console.error('Error fetching roles:', error);
       });
   }
+
+  
+
   useEffect(() => {
-    getUser(props.userId);
+    getUser(userId);
     getGroups();
     getRoles();
-  }, [props.userId]);
+  }, [userId]);
 
   const addUserToGroup = (event) => {
     try {

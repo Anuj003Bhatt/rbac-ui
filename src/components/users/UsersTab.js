@@ -5,15 +5,14 @@ import { CloseButton } from 'react-bootstrap';
 import AddUser from './AddUser';
 import CustomGrid from '../common/CustomGrid';
 import { disableUser, enableUser, getListOfUsers } from './UserService';
-import UserDetails from './UserDetails';
+import { useNavigate } from 'react-router-dom';
 
 const UsersTab = () => {
 
   const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState(null);
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [displayNewUserForm, setDisplayNewUserForm] = useState(false);
-  const [displayUserDetails, setDisplayUserDetails] = useState(false);
 
   useEffect(() => {
       getListOfUsers()
@@ -46,8 +45,7 @@ const UsersTab = () => {
   }
 
   const viewUserDetailPage = (user) => {
-    setSelectedUser(user);
-    setDisplayUserDetails(true);
+    navigate(`/user/${user.id}`);
   }
 
   const columns = [
@@ -73,16 +71,6 @@ const UsersTab = () => {
 
   return (
     <div style={{height:'100%', minHeight:'100%'}}>
-      <ReactModal
-        isOpen={displayUserDetails}
-        ariaHideApp={false}
-        contentLabel='User Details'
-        onRequestClose={() => setDisplayUserDetails(false)}>
-          <div style={{ float: 'right' }}>
-          <CloseButton onClick={() => setDisplayUserDetails(false)} />
-        </div>
-        <UserDetails setDisplayUserDetails={() => setDisplayUserDetails(false)} userId={selectedUser?selectedUser.id:null}/>
-      </ReactModal>
       <ReactModal
         isOpen={displayNewUserForm}
         ariaHideApp={false}

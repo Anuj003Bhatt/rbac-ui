@@ -1,38 +1,23 @@
-import React, { useState } from 'react';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import AccessControl from './components/access-control/AccessControl';
-import Swagger from './components/swagger/Swagger';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
-import About from './components/about/About';
-
+import Home from './components/home/Home';
+import UserDetails from './components/users/UserDetails';
+import UserGroupDetails from './components/user-groups/UserGroupDetails'
+import RoleGroupDetails from './components/role-groups/RoleGroupDetails';
 const App = () => {
-  const [selectedApp, setSelectedApp] = useState('1')
-
-  const renderApp = () => {
-    switch (selectedApp) {
-      case '2':
-        return <About />;
-      case '3':
-        return <Swagger />
-      case '1':
-      default: return <AccessControl />
-    }
-  }
-
   return (
-    <div>
-      <Navbar expand="lg" className="bg-body-tertiary">
-        <Nav className="me-auto">
-          <Nav.Link className='navLink' href="#app" onClick={() => setSelectedApp('1')}>Access Control</Nav.Link>
-          <Nav.Link className='navLink' href="#link" onClick={() => setSelectedApp('2')}>About</Nav.Link>
-          <Nav.Link className='navLink' href="#swagger" onClick={() => setSelectedApp('3')}>Swagger</Nav.Link>
-        </Nav>
-      </Navbar>
-      {renderApp()}
-    </div>
-
+    <BrowserRouter>
+    <Routes>
+      <Route exact path="/" element={<Home/>}/>
+      <Route path='/user/:userId' element={<UserDetails/>}/>
+      <Route path='/userGroup/:groupId' element={<UserGroupDetails/>}/>
+      <Route path='/roleGroup/:groupId' element={<RoleGroupDetails/>}/>
+      <Route path='/role/:roleId' element={<div>Role Group Details</div>}/>
+      <Route path='/permission/:permissionId' element={<div>Permission Details</div>}/>
+    </Routes>
+    </BrowserRouter>
   );
+  
 };
 
 export default App;
