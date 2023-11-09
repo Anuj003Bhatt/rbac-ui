@@ -9,46 +9,80 @@ import {
 } from 'mdb-react-ui-kit';
 import CustomGrid from '../common/CustomGrid';
 import { useParams } from 'react-router-dom';
-import { getRoleGroupById, getRolesInRoleGroup } from './RoleGroupService';
+import { getRoleGroupById } from './RoleGroupService';
 import '../DetailsComponent.css';
 import Home from '../home/Home';
+import { addRoleToRoleGroup, getListOfRoles } from '../roles/RoleService';
+import { Button, Col, Row } from 'react-bootstrap';
+import SearchBar from '../common/SearchBar';
+import { AxiosError } from 'axios';
 
 const RoleGroupDetails = (props) => {
   const { groupId } = useParams();
   const [group, setGroup] = useState({});
-  const [groupRoles, setGroupRoles] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [roles, setRoles] = useState([]);
+  const [selectedRole, setSelectedRole] = useState(null);
 
-  useEffect(() => {
-    getRoleGroupById(groupId).then(
-      (response) => setGroup(response)
-    ).catch((error)=> {
-      console.log(`Error fetching role group for id ${groupId}: `, error);
-    });
-
-    getRolesInRoleGroup(groupId)
-    .then(
+  const getRoleGroup = (id) => {
+    getRoleGroupById(id).then(
       (response) => {
-        setGroupRoles(response);
+        setGroup(response)
         setLoading(false);
       }
-    ).catch((error) => {
-      console.log('Error fetching roles:', error);
-      setLoading(false);
+    ).catch((error)=> {
+      console.log(`Error fetching role group for id ${id}: `, error);
     });
+  }
+
+  const getAllRoles = () => {
+    getListOfRoles().then(
+      (response) => {
+        setRoles(response)
+      }
+    ).catch((error) => {
+      console.log(`Error fetching roles: `, error);
+    })
+  }
+
+  const addRoleToGroup = (event) => {
+    try {
+      if (selectedRole) {
+        addRoleToRoleGroup(selectedRole, group.id).then((response) => {
+          getRoleGroup(group.id)
+        }
+        );
+
+      }
+    } catch (error) {
+      switch (error?.code) {
+        case AxiosError.ERR_NETWORK:
+          alert('Error: Unable to submit request to the server');
+          break;
+        default:
+          alert('Error: ' + error.response);
+      }
+    }
+  }
+
+  useEffect(() => {
+    getRoleGroup(groupId);
+    getAllRoles();
   }, [groupId]);
   
   return (
     <div>
       <Home renderMain={false}/>
     <MDBCardBody className="p-4 main">
-      <MDBTypography tag='h3'>Role Group Details</MDBTypography>
+      <MDBTypography tag='h1'>Role Group Details</MDBTypography>
 
       <MDBCardText className="small">
         <MDBIcon far icon="star" size="lg" />
       </MDBCardText>
       <hr className="my-4" />
       <MDBCardBody className="p-4">
+        <MDBTypography tag="h3">Basic Information</MDBTypography>
+          <hr className="mt-0 mb-4" />
         <MDBRow className="pt-1">
           <MDBCol size="6" className="mb-3">
             <MDBTypography tag="h6">ID</MDBTypography>
@@ -67,12 +101,23 @@ const RoleGroupDetails = (props) => {
         </MDBRow>
         
         <hr className="mt-0 mb-4" />
+        <MDBTypography tag="h6">
+            <Row>
+              <Col><MDBTypography tag="h3">Roles</MDBTypography></Col>
+              <Col>
+                <Row>
+                  <Col><SearchBar selectAction={setSelectedRole} data={roles} /></Col>
+                  <Col><Button onClick={addRoleToGroup}>Add Role</Button></Col>
+                </Row>
+              </Col>
+            </Row>
+            </MDBTypography>
         
           {loading?'Loading':
           <MDBRow className="pt-1">
           <CustomGrid
             hideToolbar={true}
-            data={groupRoles} columns={
+            data={group.roles} columns={
               [
                 { field: 'id', headerName: 'ID', flex: 1 },
                 { field: 'name', headerName: 'Name', flex: 1 }

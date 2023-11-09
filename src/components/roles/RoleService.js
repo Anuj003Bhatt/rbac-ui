@@ -21,3 +21,23 @@ export const assignRoleToUser = async (userId, roleId) => {
   .then((response) => response.data)
   .catch((error) => {throw error;});
 }
+
+export const assignRoleGroupToUser = async (userId, roleGroupId) => {
+  return await axios.put(`http://${SERVICES.rbac.host}:${SERVICES.rbac.port}/assignments/user/${userId}/roleGroup/${roleGroupId}`,null,{
+    headers:{
+      'Access-Control-Allow-Origin': '*'
+    }
+  })
+  .then((response) => response)
+  .catch((error) => {throw error;});
+}
+
+export const addRoleToRoleGroup = async (roleId, roleGroupId) => {
+  return await axios.put(`http://${SERVICES.rbac.host}:${SERVICES.rbac.port}/assignments/role/${roleId}/roleGroup/${roleGroupId}`,null,{
+    headers:{
+      'Access-Control-Allow-Origin': '*'
+    }
+  })
+  .then((response) => response)
+  .catch((error) => {throw error;});
+}

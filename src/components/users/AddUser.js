@@ -8,7 +8,6 @@ import { Divider } from "@mui/material";
 import { SERVICES } from "../../utilities/Constants";
 
 const AddUser = () => {
-
     const formKeyMapping = {
         'formName' : 'name',
         'formUsername': 'userName',

@@ -11,20 +11,23 @@ import CustomGrid from '../common/CustomGrid';
 import { Button, Col, Row } from 'react-bootstrap';
 import { addUserInGroups, getListOfUserGroups } from '../user-groups/UserGroupsService';
 import SearchBar from '../common/SearchBar';
-import { assignRoleToUser, getListOfRoles } from '../roles/RoleService';
+import { assignRoleGroupToUser, assignRoleToUser, getListOfRoles } from '../roles/RoleService';
 import { AxiosError } from 'axios';
 import { getUserById } from './UserService';
 import { useParams } from 'react-router-dom';
 import Home from '../home/Home';
 import '../DetailsComponent.css';
+import { getListOfRoleGroups } from '../role-groups/RoleGroupService';
 
 const UserDetails = (props) => {
   const { userId } = useParams();
   const [user, setUser] = useState(null);
   const [groups, setGroups] = useState([]);
+  const [roleGroups, setRoleGroups] = useState([]);
   const [roles, setRoles] = useState([]);
   const [selectedGroup, setSelectedGroup] = useState(null);
   const [selectedRole, setSelectedRole] = useState(null);
+  const [selectedRoleGroup, setSelectedRoleGroup] = useState(null);
 
   const getUser = (id) => {
     getUserById(id)
@@ -44,6 +47,15 @@ const UserDetails = (props) => {
       });
   }
 
+  const getRoleGroups = () => {
+    getListOfRoleGroups()
+      .then((response) => {
+        setRoleGroups(response);
+      }).catch((error) => {
+        console.error('Error fetching role groups:', error);
+      });
+  }
+
   const getRoles = () => {
     getListOfRoles()
       .then((response) => {
@@ -59,6 +71,7 @@ const UserDetails = (props) => {
     getUser(userId);
     getGroups();
     getRoles();
+    getRoleGroups();
   }, [userId]);
 
   const addUserToGroup = (event) => {
@@ -77,6 +90,26 @@ const UserDetails = (props) => {
           break;
         default:
           alert('Error: ' + error.response);
+      }
+    }
+  }
+
+  const assignRoleGroup = (event) => {
+    try {
+      if (selectedRoleGroup) {
+        assignRoleGroupToUser(user.id, selectedRoleGroup).then((response) => {
+          getUser(user.id)
+        }
+        );
+
+      }
+    } catch (error) {
+      switch (error?.code) {
+        case AxiosError.ERR_NETWORK:
+          alert('Error: Unable to submit request to the server');
+          break;
+        default:
+          alert('Error: ' + JSON.stringify(error));
       }
     }
   }
@@ -113,7 +146,7 @@ const UserDetails = (props) => {
         </MDBCardText>
         <hr className="my-4" />
         <MDBCardBody className="p-4">
-          <MDBTypography tag="h6">Basic Information</MDBTypography>
+          <MDBTypography tag="h3">Basic Information</MDBTypography>
           <hr className="mt-0 mb-4" />
           <MDBRow className="pt-1">
             <MDBCol size="6" className="mb-3">
@@ -146,7 +179,7 @@ const UserDetails = (props) => {
           <hr className="mt-0 mb-4" />
           <MDBTypography tag="h6">
             <Row>
-              <Col>User Roles</Col>
+              <Col><MDBTypography tag="h3">User Roles</MDBTypography></Col>
               <Col>
                 <Row>
                   <Col><SearchBar selectAction={setSelectedRole} data={roles} /></Col>
@@ -161,7 +194,6 @@ const UserDetails = (props) => {
             <CustomGrid
               hideToolbar={true}
               gridActionText="User Roles"
-              clickAction={() => alert("Here")}
               data={user ? user.roles : []} columns={
                 [
                   // { field: 'id', headerName: 'ID', flex: 1 },
@@ -174,7 +206,7 @@ const UserDetails = (props) => {
           <hr className="mt-0 mb-4" />
           <MDBTypography tag="h6">
             <Row>
-              <Col>User Groups</Col>
+              <Col><MDBTypography tag="h3">User Groups</MDBTypography></Col>
               <Col>
                 <Row>
                   <Col><SearchBar selectAction={setSelectedGroup} data={groups} /></Col>
@@ -191,11 +223,40 @@ const UserDetails = (props) => {
               <CustomGrid
                 hideToolbar={true}
                 gridActionText="User Roles"
-                clickAction={() => alert("Here")}
                 data={user ? user.userGroups : []} columns={
                   [
                     // { field: 'id', headerName: 'ID', flex: 1 },
                     { field: 'name', headerName: 'Group', flex: 1 }
+                  ]
+                } />
+
+            </MDBRow>
+          </MDBRow>
+
+          <hr className="mt-0 mb-4" />
+          <MDBTypography tag="h6">
+            <Row>
+              <Col><MDBTypography tag="h3">Role Groups</MDBTypography></Col>
+              <Col>
+                <Row>
+                  <Col><SearchBar selectAction={setSelectedRoleGroup} data={roleGroups} /></Col>
+                  <Col><Button onClick={assignRoleGroup}>Add Role Group</Button></Col>
+                </Row>
+              </Col>
+            </Row>
+
+          </MDBTypography>
+
+          <hr className="mt-0 mb-4" />
+          <MDBRow className="pt-1">
+            <MDBRow className="pt-1">
+              <CustomGrid
+                hideToolbar={true}
+                gridActionText="Role Groups"
+                data={user ? user.roleGroups : []} columns={
+                  [
+                    // { field: 'id', headerName: 'ID', flex: 1 },
+                    { field: 'name', headerName: 'Role Group', flex: 1 }
                   ]
                 } />
 
